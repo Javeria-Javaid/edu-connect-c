@@ -1,8 +1,17 @@
 import React from 'react';
 import { Search, Bell, User, Menu } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import './DashboardHeader.css';
 
 const DashboardHeader = ({ toggleSidebar, isMobile }) => {
+    const { user, role } = useAuth();
+
+    // Derive display name from email or role since we don't have a name field yet
+    const displayName = user?.email ? user.email.split('@')[0] : 'User';
+    const displayRole = role === 'school_admin' ? 'School Administrator' :
+        role === 'admin' ? 'Super Admin' :
+            role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Guest';
+
     return (
         <header className="dashboard-header">
             <div className="header-left">
@@ -13,7 +22,7 @@ const DashboardHeader = ({ toggleSidebar, isMobile }) => {
                 )}
                 <div className="search-bar">
                     <Search size={18} className="search-icon" />
-                    <input type="text" placeholder="Search..." />
+                    <input type="text" placeholder="Search students, teachers, etc..." />
                 </div>
             </div>
 
@@ -24,8 +33,8 @@ const DashboardHeader = ({ toggleSidebar, isMobile }) => {
                 </button>
                 <div className="profile-dropdown">
                     <div className="profile-info">
-                        <span className="profile-name">Admin User</span>
-                        <span className="profile-role">Super Admin</span>
+                        <span className="profile-name">{displayName}</span>
+                        <span className="profile-role">{displayRole}</span>
                     </div>
                     <div className="profile-avatar">
                         <User size={20} />

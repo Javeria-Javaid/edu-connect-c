@@ -16,6 +16,22 @@ import { Communication as CommunicationCenter } from './components/Communication
 import Settings from './components/settings/Settings.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 
+// School Dashboard Imports
+import SchoolDashboardLayout from './dashboard/SchoolDashboardLayout.jsx';
+import SchoolDashboardOverview from './components/school-dashboard/SchoolDashboardOverview.jsx';
+import SchoolStudentsView from './components/school-dashboard/SchoolStudentsView.jsx';
+import SchoolTeachersView from './components/school-dashboard/SchoolTeachersView.jsx';
+import SchoolParentsView from './components/school-dashboard/SchoolParentsView.jsx';
+import SchoolClassesView from './components/school-dashboard/SchoolClassesView.jsx';
+import SchoolExamsView from './components/school-dashboard/SchoolExamsView.jsx';
+import SchoolTimetableView from './components/school-dashboard/SchoolTimetableView.jsx';
+import SchoolAttendanceView from './components/school-dashboard/SchoolAttendanceView.jsx';
+import SchoolAdmissionsView from './components/school-dashboard/SchoolAdmissionsView.jsx';
+import SchoolFinanceView from './components/school-dashboard/SchoolFinanceView.jsx';
+import SchoolTransportView from './components/school-dashboard/SchoolTransportView.jsx';
+import SchoolReportsView from './components/school-dashboard/SchoolReportsView.jsx';
+import SchoolSettingsView from './components/school-dashboard/SchoolSettingsView.jsx';
+
 // Import your existing landing page components
 import CardNav from './components/CardNav/CardNav';
 import Hero from './components/Hero/Hero';
@@ -181,6 +197,28 @@ function App() {
                             <Route path="support" element={<Support />} />
                             <Route path="communication" element={<CommunicationCenter />} />
                             <Route path="settings" element={<Settings />} />
+                        </Route>
+                    </Route>
+
+                    {/* Protected School Admin Routes */}
+                    <Route
+                        path="/school/dashboard"
+                        element={<ProtectedRoute allowedRoles={['school_admin']} />}
+                    >
+                        <Route element={<SchoolDashboardLayout />}>
+                            <Route index element={<SchoolDashboardOverview />} />
+                            <Route path="students" element={<SchoolStudentsView />} />
+                            <Route path="teachers" element={<SchoolTeachersView />} />
+                            <Route path="parents" element={<SchoolParentsView />} />
+                            <Route path="classes" element={<SchoolClassesView />} />
+                            <Route path="exams" element={<SchoolExamsView />} />
+                            <Route path="timetable" element={<SchoolTimetableView />} />
+                            <Route path="attendance" element={<SchoolAttendanceView />} />
+                            <Route path="admissions" element={<SchoolAdmissionsView />} />
+                            <Route path="finance" element={<SchoolFinanceView />} />
+                            <Route path="transport" element={<SchoolTransportView />} />
+                            <Route path="reports" element={<SchoolReportsView />} />
+                            <Route path="settings" element={<SchoolSettingsView />} />
                         </Route>
                     </Route>
 

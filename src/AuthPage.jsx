@@ -12,7 +12,7 @@ const ADMIN_PASSWORD = 'password123';
 const AuthPage = ({ defaultView = 'login' }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { login, isAuthenticated } = useAuth();
+    const { login, isAuthenticated, role: userRole } = useAuth();
     const [isLoginView, setIsLoginView] = useState(defaultView !== 'signup');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,10 +24,19 @@ const AuthPage = ({ defaultView = 'login' }) => {
     // Redirect if already authenticated - prevents authenticated users from accessing login page
     useEffect(() => {
         if (isAuthenticated) {
-            const from = location.state?.from?.pathname || '/dashboard';
-            navigate(from, { replace: true });
+            const from = location.state?.from?.pathname;
+            if (from) {
+                navigate(from, { replace: true });
+            } else {
+                // Redirect based on the authenticated user's role
+                if (userRole === 'school_admin') {
+                    navigate('/school/dashboard', { replace: true });
+                } else {
+                    navigate('/dashboard', { replace: true });
+                }
+            }
         }
-    }, [isAuthenticated, navigate, location.state]);
+    }, [isAuthenticated, navigate, location.state, userRole]);
 
     useEffect(() => {
         setIsLoginView(defaultView !== 'signup');
@@ -47,9 +56,17 @@ const AuthPage = ({ defaultView = 'login' }) => {
         // Authenticate user (mock)
         login({ email: credentials.email, role: role }); // Use selected role
 
-        // Redirect to intended destination or default to '/dashboard'
-        const from = location.state?.from?.pathname || '/dashboard';
-        navigate(from, { replace: true });
+        // Redirect to intended destination or default based on role
+        const from = location.state?.from?.pathname;
+        if (from) {
+            navigate(from, { replace: true });
+        } else {
+            if (role === 'school_admin') {
+                navigate('/school/dashboard', { replace: true });
+            } else {
+                navigate('/dashboard', { replace: true });
+            }
+        }
     };
 
     const handleLoginSubmit = (e) => {
@@ -70,6 +87,8 @@ const AuthPage = ({ defaultView = 'login' }) => {
             role: role
         });
 
+        // Allow any login for development if it matches admin credentials OR if we just want to test roles
+        // For now, let's keep the admin check but allow it to proceed with the selected role
         if (trimmedEmail === ADMIN_EMAIL && trimmedPassword === ADMIN_PASSWORD) {
             console.log("Login Successful! Redirecting to Dashboard...");
             handleLogin({ email: trimmedEmail, password: trimmedPassword });
@@ -111,7 +130,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
                         className="role-select"
                     >
                         <option value="admin">Super Admin</option>
-                        <option value="school">School Administrator</option>
+                        <option value="school_admin">School Administrator</option>
                         <option value="teacher">Teacher</option>
                         <option value="parent">Parent</option>
                         <option value="vendor">Vendor</option>
@@ -196,7 +215,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
                         className="role-select"
                     >
                         <option value="admin">Super Admin</option>
-                        <option value="school">School Administrator</option>
+                        <option value="school_admin">School Administrator</option>
                         <option value="teacher">Teacher</option>
                         <option value="parent">Parent</option>
                         <option value="vendor">Vendor</option>
@@ -286,8 +305,16 @@ const AuthPage = ({ defaultView = 'login' }) => {
 
     // If already authenticated, redirect to '/dashboard' (fallback for useEffect)
     if (isAuthenticated) {
-        const from = location.state?.from?.pathname || '/dashboard';
-        return <Navigate to={from} replace />;
+        const from = location.state?.from?.pathname;
+        // If we have a specific destination, go there
+        if (from) {
+            return <Navigate to={from} replace />;
+        }
+        // Otherwise, redirect based on role
+        if (userRole === 'school_admin') {
+            return <Navigate to="/school/dashboard" replace />;
+        }
+        return <Navigate to="/dashboard" replace />;
     }
 
     return (
