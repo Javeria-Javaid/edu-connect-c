@@ -11,10 +11,9 @@ import {
     DollarSign,
     Clock
 } from 'lucide-react';
-import './SchoolDashboardOverview.css'; // Import component-specific styles
+import './SchoolDashboardOverview.css';
 
 const SchoolDashboardOverview = () => {
-    // Mock Data for KPI Cards
     const kpiData = [
         { title: 'Total Students', value: '1,250', change: '+5%', icon: Users, color: '#3b82f6' },
         { title: 'Total Teachers', value: '85', change: '2 Vacancies', icon: GraduationCap, color: '#10b981' },
@@ -191,8 +190,8 @@ const SchoolDashboardOverview = () => {
                         </div>
                     </div>
                 </div>
-            </div> {/* end of dashboard-grid */}
-        </div> {/* end of school-dashboard-overview */ }
+            </div>
+        </div>
     );
 };
 
