@@ -3,6 +3,7 @@ import { Eye, Edit, MessageCircle, Printer, Plus, Download } from 'lucide-react'
 import SearchBar from '../shared/SearchBar';
 import DataTable from '../shared/DataTable';
 import FilterPanel from '../shared/FilterPanel';
+import AddStudentModal from './AddStudentModal';
 import { mockStudents, studentFilters } from './mockData';
 import './StudentDirectory.css';
 
@@ -10,6 +11,12 @@ const StudentDirectory = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeFilters, setActiveFilters] = useState({});
     const [selectedStudents, setSelectedStudents] = useState([]);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const handleAddStudent = (studentData) => {
+        console.log('New student:', studentData);
+        // In real implementation, this would add to database
+    };
 
     // Filter and search logic
     const filteredStudents = useMemo(() => {
@@ -163,7 +170,7 @@ const StudentDirectory = () => {
                         <Download size={18} />
                         Export
                     </button>
-                    <button className="btn-primary">
+                    <button className="btn-primary" onClick={() => setIsAddModalOpen(true)}>
                         <Plus size={18} />
                         Add Student
                     </button>
@@ -204,6 +211,13 @@ const StudentDirectory = () => {
                 onSelectionChange={setSelectedStudents}
                 onQuickAction={getQuickActions}
                 pageSize={10}
+            />
+
+            {/* Add Student Modal */}
+            <AddStudentModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onSubmit={handleAddStudent}
             />
         </div>
     );
