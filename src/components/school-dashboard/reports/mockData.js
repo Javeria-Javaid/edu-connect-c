@@ -37,5 +37,40 @@ export const reportsOverviewData = {
         { id: 3, name: 'Robert Brown', subject: 'English', workload: '20 hrs/week', attendance: '92%', performance: 'Average', lastEvaluation: '2025-09-10' },
         { id: 4, name: 'Emily Davis', subject: 'History', workload: '18 hrs/week', attendance: '96%', performance: 'Excellent', lastEvaluation: '2025-09-25' },
         { id: 5, name: 'Michael Wilson', subject: 'Geography', workload: '21 hrs/week', attendance: '90%', performance: 'Good', lastEvaluation: '2025-09-18' },
+    ],
+    attendanceReports: [
+        { id: 1, date: '2025-10-31', class: '10-A', present: 28, absent: 2, late: 0, total: 30 },
+        { id: 2, date: '2025-10-31', class: '10-B', present: 25, absent: 5, late: 1, total: 31 },
+        { id: 3, date: '2025-10-31', class: '9-A', present: 29, absent: 1, late: 2, total: 32 },
+        { id: 4, date: '2025-10-31', class: '11-C', present: 27, absent: 3, late: 0, total: 30 },
+        { id: 5, date: '2025-10-31', class: '12-A', present: 26, absent: 4, late: 1, total: 31 },
+    ],
+    academicReports: [
+        { id: 1, exam: 'Mid-Term 2025', class: '10-A', subject: 'Mathematics', average: 78, highest: 98, lowest: 45, passRate: '92%' },
+        { id: 2, exam: 'Mid-Term 2025', class: '10-B', subject: 'Science', average: 72, highest: 95, lowest: 40, passRate: '88%' },
+        { id: 3, exam: 'Mid-Term 2025', class: '9-A', subject: 'English', average: 85, highest: 99, lowest: 60, passRate: '98%' },
+        { id: 4, exam: 'Mid-Term 2025', class: '11-C', subject: 'History', average: 76, highest: 92, lowest: 50, passRate: '90%' },
+        { id: 5, exam: 'Mid-Term 2025', class: '12-A', subject: 'Physics', average: 68, highest: 94, lowest: 35, passRate: '82%' },
+    ],
+    gradeDistribution: [
+        { name: 'A (90-100)', value: 15, fill: '#22c55e' },
+        { name: 'B (80-89)', value: 30, fill: '#3b82f6' },
+        { name: 'C (70-79)', value: 25, fill: '#f59e0b' },
+        { name: 'D (60-69)', value: 20, fill: '#f97316' },
+        { name: 'F (<60)', value: 10, fill: '#ef4444' },
+    ],
+    financeReports: [
+        { id: 1, type: 'Tuition Fees', amount: '$450,000', status: 'Collected', date: '2025-10-01' },
+        { id: 2, type: 'Transport Fees', amount: '$25,000', status: 'Pending', date: '2025-10-05' },
+        { id: 3, type: 'Library Fines', amount: '$1,200', status: 'Collected', date: '2025-10-10' },
+        { id: 4, type: 'Exam Fees', amount: '$15,000', status: 'Collected', date: '2025-10-15' },
+        { id: 5, type: 'Donations', amount: '$5,000', status: 'Collected', date: '2025-10-20' },
+    ],
+    transportReports: [
+        { id: 1, route: 'Route A', driver: 'John Smith', students: 45, capacity: 50, status: 'On Time' },
+        { id: 2, route: 'Route B', driver: 'Sarah Jones', students: 48, capacity: 50, status: 'Delayed' },
+        { id: 3, route: 'Route C', driver: 'Mike Brown', students: 40, capacity: 50, status: 'On Time' },
+        { id: 4, route: 'Route D', driver: 'Lisa White', students: 42, capacity: 50, status: 'On Time' },
+        { id: 5, route: 'Route E', driver: 'Tom Wilson', students: 35, capacity: 50, status: 'Maintenance' },
     ]
 };

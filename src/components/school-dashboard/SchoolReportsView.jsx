@@ -7,104 +7,100 @@ import {
     DollarSign,
     Bus,
     Settings,
-    Calendar
+    Calendar,
+    ArrowLeft
 } from 'lucide-react';
 import ReportsOverview from './reports/ReportsOverview';
 import StudentReports from './reports/StudentReports';
 import TeacherReports from './reports/TeacherReports';
+import AttendanceReports from './reports/AttendanceReports';
+import AcademicReports from './reports/AcademicReports';
+import FinanceReports from './reports/FinanceReports';
+import TransportReports from './reports/TransportReports';
+import CustomReports from './reports/CustomReports';
 
 const SchoolReportsView = () => {
-    const [activeTab, setActiveTab] = useState('overview');
+    const [activeView, setActiveView] = useState('overview');
 
-    const tabs = [
-        { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-        { id: 'students', label: 'Students', icon: Users },
-        { id: 'teachers', label: 'Teachers', icon: GraduationCap },
-        { id: 'attendance', label: 'Attendance', icon: Calendar },
-        { id: 'academic', label: 'Academic & Exams', icon: FileBarChart },
-        { id: 'finance', label: 'Finance', icon: DollarSign },
-        { id: 'transport', label: 'Transport', icon: Bus },
-        { id: 'custom', label: 'Custom Reports', icon: Settings },
+    const reportTypes = [
+        { id: 'students', label: 'Student Reports', icon: Users, description: 'Performance, behavior, and enrollment data' },
+        { id: 'teachers', label: 'Teacher Reports', icon: GraduationCap, description: 'Workload, evaluations, and attendance' },
+        { id: 'attendance', label: 'Attendance Logs', icon: Calendar, description: 'Daily logs and monthly summaries' },
+        { id: 'academic', label: 'Academic Results', icon: FileBarChart, description: 'Exam scores and grade distributions' },
+        { id: 'finance', label: 'Financial Reports', icon: DollarSign, description: 'Fee collection and expense tracking' },
+        { id: 'transport', label: 'Transport Data', icon: Bus, description: 'Route status and vehicle logs' },
+        { id: 'custom', label: 'Custom Builder', icon: Settings, description: 'Create and export custom reports' },
     ];
 
     const renderContent = () => {
-        switch (activeTab) {
+        switch (activeView) {
             case 'overview':
-                return <ReportsOverview />;
+                return (
+                    <ReportsOverview
+                        onNavigate={setActiveView}
+                        reportTypes={reportTypes}
+                    />
+                );
             case 'students':
                 return <StudentReports />;
             case 'teachers':
                 return <TeacherReports />;
             case 'attendance':
-                return <div className="p-8 text-center text-gray-500">Attendance Reports Module Coming Soon</div>;
+                return <AttendanceReports />;
             case 'academic':
-                return <div className="p-8 text-center text-gray-500">Academic Reports Module Coming Soon</div>;
+                return <AcademicReports />;
             case 'finance':
-                return <div className="p-8 text-center text-gray-500">Finance Reports Module Coming Soon</div>;
+                return <FinanceReports />;
             case 'transport':
-                return <div className="p-8 text-center text-gray-500">Transport Reports Module Coming Soon</div>;
+                return <TransportReports />;
             case 'custom':
-                return <div className="p-8 text-center text-gray-500">Custom Reports Module Coming Soon</div>;
+                return <CustomReports />;
             default:
-                return <ReportsOverview />;
+                return <ReportsOverview onNavigate={setActiveView} reportTypes={reportTypes} />;
         }
     };
 
     return (
-        <div className="flex h-[calc(100vh-4rem)] bg-gray-50">
-            {/* Internal Sidebar */}
-            <div className="w-64 bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto">
-                <div className="p-6">
-                    <h2 className="text-xl font-bold text-gray-800">Reports</h2>
-                    <p className="text-sm text-gray-500 mt-1">Analytics & Insights</p>
-                </div>
-                <nav className="px-3 space-y-1">
-                    {tabs.map((tab) => {
-                        const Icon = tab.icon;
-                        return (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${activeTab === tab.id
-                                        ? 'bg-blue-50 text-blue-700'
-                                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                                    }`}
-                            >
-                                <Icon className={`w-5 h-5 mr-3 ${activeTab === tab.id ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-500'
-                                    }`} />
-                                {tab.label}
-                            </button>
-                        );
-                    })}
-                </nav>
-            </div>
-
-            {/* Main Content Area */}
-            <div className="flex-1 overflow-y-auto">
-                <header className="bg-white border-b border-gray-200 px-8 py-5 sticky top-0 z-10">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900">
-                                {tabs.find(t => t.id === activeTab)?.label}
+        <div className="min-h-screen bg-gray-50 p-8 font-sans">
+            <div className="max-w-7xl mx-auto space-y-6">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div>
+                        <div className="flex items-center gap-3">
+                            {activeView !== 'overview' && (
+                                <button
+                                    onClick={() => setActiveView('overview')}
+                                    className="p-2 hover:bg-gray-100 rounded-full transition-colors group"
+                                    title="Back to Overview"
+                                >
+                                    <ArrowLeft className="w-5 h-5 text-gray-500 group-hover:text-[#2A6EF2]" />
+                                </button>
+                            )}
+                            <h1 className="text-2xl font-bold text-slate-800">
+                                {activeView === 'overview' ? 'Reports Dashboard' : reportTypes.find(t => t.id === activeView)?.label}
                             </h1>
-                            <p className="text-sm text-gray-500 mt-1">
-                                View and manage {tabs.find(t => t.id === activeTab)?.label.toLowerCase()} reports
-                            </p>
                         </div>
-                        <div className="flex gap-3">
-                            <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                                Export View
-                            </button>
-                            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
-                                Generate New Report
-                            </button>
-                        </div>
+                        <p className="text-slate-500 mt-1 ml-1 text-sm">
+                            {activeView === 'overview'
+                                ? 'Centralized analytics and reporting hub for your school'
+                                : `Detailed ${activeView} analytics and export options`}
+                        </p>
                     </div>
-                </header>
 
-                <main className="p-8">
+                    <div className="flex gap-3">
+                        <button className="px-4 py-2 bg-white border border-[#2A6EF2] text-[#2A6EF2] rounded-lg text-sm font-semibold hover:bg-blue-50 transition-all">
+                            Export View
+                        </button>
+                        <button className="px-4 py-2 bg-[#2A6EF2] text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-all shadow-sm">
+                            Generate New Report
+                        </button>
+                    </div>
+                </div>
+
+                {/* Main Content */}
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                     {renderContent()}
-                </main>
+                </div>
             </div>
         </div>
     );

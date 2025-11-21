@@ -1,210 +1,215 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react';
-import './DataTable.css';
+import { ChevronLeft, ChevronRight, Search, Filter, MoreVertical, Download, Trash2, Edit, Eye } from 'lucide-react';
 
 const DataTable = ({
-    columns = [],
-    data = [],
-    onRowClick,
-    onQuickAction,
+    columns,
+    data,
     selectable = false,
     onSelectionChange,
+    onQuickAction,
     pageSize = 10,
-    className = ""
+    searchPlaceholder = "Search..."
 }) => {
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const [selectedRows, setSelectedRows] = useState(new Set());
     const [currentPage, setCurrentPage] = useState(1);
-    const [actionMenuOpen, setActionMenuOpen] = useState(null);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-    // Sorting logic
-    const sortedData = React.useMemo(() => {
-        if (!sortConfig.key) return data;
+    // Filter data based on search term
+    const filteredData = data.filter(item =>
+        Object.values(item).some(val =>
+            String(val).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    );
 
-        return [...data].sort((a, b) => {
-            const aVal = a[sortConfig.key];
-            const bVal = b[sortConfig.key];
+    // Sort data
+    const sortedData = [...filteredData].sort((a, b) => {
+        if (!sortConfig.key) return 0;
+        const aVal = a[sortConfig.key];
+        const bVal = b[sortConfig.key];
 
-            if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
-            if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
-            return 0;
-        });
-    }, [data, sortConfig]);
+        if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+    });
 
     // Pagination
     const totalPages = Math.ceil(sortedData.length / pageSize);
-    const paginatedData = sortedData.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-    );
+    const startIndex = (currentPage - 1) * pageSize;
+    const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
 
     const handleSort = (key) => {
-        setSortConfig(current => ({
-            key,
-            direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc'
-        }));
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
     };
 
-    const handleSelectAll = (checked) => {
-        if (checked) {
-            setSelectedRows(new Set(paginatedData.map(row => row.id)));
+    const handleSelectAll = (e) => {
+        if (e.target.checked) {
+            const allIds = paginatedData.map(row => row.id);
+            setSelectedRows(allIds);
+            onSelectionChange && onSelectionChange(allIds);
         } else {
-            setSelectedRows(new Set());
-        }
-        if (onSelectionChange) {
-            onSelectionChange(checked ? paginatedData.map(row => row.id) : []);
+            setSelectedRows([]);
+            onSelectionChange && onSelectionChange([]);
         }
     };
 
-    const handleSelectRow = (id, checked) => {
-        const newSelected = new Set(selectedRows);
-        if (checked) {
-            newSelected.add(id);
-        } else {
-            newSelected.delete(id);
-        }
-        setSelectedRows(newSelected);
-        if (onSelectionChange) {
-            onSelectionChange(Array.from(newSelected));
-        }
-    };
-
-    const renderCell = (row, column) => {
-        if (column.render) {
-            return column.render(row);
-        }
-        return row[column.key];
+    const handleSelectRow = (id) => {
+        const newSelection = selectedRows.includes(id)
+            ? selectedRows.filter(rowId => rowId !== id)
+            : [...selectedRows, id];
+        setSelectedRows(newSelection);
+        onSelectionChange && onSelectionChange(newSelection);
     };
 
     return (
-        <div className={`data-table-container ${className}`}>
-            <div className="table-wrapper">
-                <table className="data-table">
-                    <thead>
+        <div className="w-full">
+            {/* Table Actions Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+                <div className="relative w-full sm:w-64">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                        type="text"
+                        placeholder={searchPlaceholder}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-[var(--border-radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className="flex gap-2">
+                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-[var(--border-radius-base)] text-sm text-[var(--text-secondary)] hover:bg-gray-50 transition-colors">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                    </button>
+                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-[var(--border-radius-base)] text-sm text-[var(--text-secondary)] hover:bg-gray-50 transition-colors">
+                        <Download className="w-4 h-4 mr-2" />
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto border border-gray-200 rounded-[var(--border-radius-base)] bg-white">
+                <table className="w-full text-sm text-left">
+                    <thead className="text-xs text-[var(--text-secondary)] uppercase bg-[var(--surface-muted)] border-b border-gray-200">
                         <tr>
                             {selectable && (
-                                <th className="checkbox-cell">
+                                <th className="p-4 w-4">
                                     <input
                                         type="checkbox"
-                                        checked={selectedRows.size === paginatedData.length && paginatedData.length > 0}
-                                        onChange={(e) => handleSelectAll(e.target.checked)}
-                                        className="table-checkbox"
+                                        className="w-4 h-4 text-[var(--primary-color)] border-gray-300 rounded focus:ring-[var(--primary-color)]"
+                                        onChange={handleSelectAll}
+                                        checked={paginatedData.length > 0 && selectedRows.length === paginatedData.length}
                                     />
                                 </th>
                             )}
-                            {columns.map((column) => (
+                            {columns.map((col) => (
                                 <th
-                                    key={column.key}
-                                    className={column.sortable ? 'sortable' : ''}
-                                    onClick={() => column.sortable && handleSort(column.key)}
+                                    key={col.key}
+                                    className={`px-6 py-3 font-semibold tracking-wide ${col.sortable ? 'cursor-pointer hover:text-[var(--primary-color)]' : ''}`}
+                                    onClick={() => col.sortable && handleSort(col.key)}
                                 >
-                                    <div className="th-content">
-                                        <span>{column.label}</span>
-                                        {column.sortable && (
-                                            <span className="sort-icon">
-                                                {sortConfig.key === column.key ? (
-                                                    sortConfig.direction === 'asc' ?
-                                                        <ChevronUp size={16} /> :
-                                                        <ChevronDown size={16} />
-                                                ) : (
-                                                    <ChevronDown size={16} className="inactive" />
-                                                )}
+                                    <div className="flex items-center gap-1">
+                                        {col.label}
+                                        {sortConfig.key === col.key && (
+                                            <span className="text-[var(--primary-color)]">
+                                                {sortConfig.direction === 'asc' ? '↑' : '↓'}
                                             </span>
                                         )}
                                     </div>
                                 </th>
                             ))}
-                            {onQuickAction && <th className="actions-cell">Actions</th>}
+                            {onQuickAction && <th className="px-6 py-3 text-right">Actions</th>}
                         </tr>
                     </thead>
-                    <tbody>
-                        {paginatedData.map((row, index) => (
-                            <tr
-                                key={row.id || index}
-                                className={`${selectedRows.has(row.id) ? 'selected' : ''} ${onRowClick ? 'clickable' : ''}`}
-                                onClick={() => onRowClick && onRowClick(row)}
-                            >
-                                {selectable && (
-                                    <td className="checkbox-cell" onClick={(e) => e.stopPropagation()}>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRows.has(row.id)}
-                                            onChange={(e) => handleSelectRow(row.id, e.target.checked)}
-                                            className="table-checkbox"
-                                        />
-                                    </td>
-                                )}
-                                {columns.map((column) => (
-                                    <td key={column.key} className={column.className || ''}>
-                                        {renderCell(row, column)}
-                                    </td>
-                                ))}
-                                {onQuickAction && (
-                                    <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
-                                        <button
-                                            className="action-menu-btn"
-                                            onClick={() => setActionMenuOpen(actionMenuOpen === row.id ? null : row.id)}
-                                        >
-                                            <MoreVertical size={16} />
-                                        </button>
-                                        {actionMenuOpen === row.id && (
-                                            <div className="action-menu">
-                                                {onQuickAction(row).map((action, idx) => (
+                    <tbody className="divide-y divide-gray-200">
+                        {paginatedData.length > 0 ? (
+                            paginatedData.map((row, index) => (
+                                <tr
+                                    key={row.id || index}
+                                    className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-[var(--surface-muted)]'}`}
+                                >
+                                    {selectable && (
+                                        <td className="p-4 w-4">
+                                            <input
+                                                type="checkbox"
+                                                className="w-4 h-4 text-[var(--primary-color)] border-gray-300 rounded focus:ring-[var(--primary-color)]"
+                                                checked={selectedRows.includes(row.id)}
+                                                onChange={() => handleSelectRow(row.id)}
+                                            />
+                                        </td>
+                                    )}
+                                    {columns.map((col) => (
+                                        <td key={col.key} className="px-6 py-4 text-[var(--text-primary)]">
+                                            {col.render ? col.render(row) : row[col.key]}
+                                        </td>
+                                    ))}
+                                    {onQuickAction && (
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex justify-end gap-2">
+                                                {onQuickAction(row).map((action, i) => (
                                                     <button
-                                                        key={idx}
-                                                        className="action-menu-item"
-                                                        onClick={() => {
-                                                            action.onClick(row);
-                                                            setActionMenuOpen(null);
-                                                        }}
+                                                        key={i}
+                                                        onClick={action.onClick}
+                                                        className="p-1.5 text-gray-500 hover:text-[var(--primary-color)] hover:bg-blue-50 rounded-md transition-colors"
+                                                        title={action.label}
                                                     >
-                                                        {action.icon && <span className="action-icon">{action.icon}</span>}
-                                                        {action.label}
+                                                        {action.icon}
                                                     </button>
                                                 ))}
                                             </div>
-                                        )}
-                                    </td>
-                                )}
+                                        </td>
+                                    )}
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={columns.length + (selectable ? 1 : 0) + (onQuickAction ? 1 : 0)} className="px-6 py-8 text-center text-gray-500">
+                                    No data found matching your search.
+                                </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
-                <div className="table-pagination">
-                    <div className="pagination-info">
-                        Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, sortedData.length)} of {sortedData.length} entries
-                    </div>
-                    <div className="pagination-controls">
+            <div className="flex items-center justify-between mt-4">
+                <span className="text-sm text-[var(--text-secondary)]">
+                    Showing <span className="font-medium text-[var(--text-primary)]">{startIndex + 1}</span> to <span className="font-medium text-[var(--text-primary)]">{Math.min(startIndex + pageSize, sortedData.length)}</span> of <span className="font-medium text-[var(--text-primary)]">{sortedData.length}</span> entries
+                </span>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="p-2 border border-gray-300 rounded-[var(--border-radius-base)] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                         <button
-                            className="pagination-btn"
-                            disabled={currentPage === 1}
-                            onClick={() => setCurrentPage(p => p - 1)}
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-8 h-8 text-sm font-medium rounded-[var(--border-radius-base)] ${currentPage === page
+                                    ? 'bg-[var(--primary-color)] text-white'
+                                    : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
+                                }`}
                         >
-                            <ChevronLeft size={16} />
+                            {page}
                         </button>
-                        {[...Array(totalPages)].map((_, idx) => (
-                            <button
-                                key={idx}
-                                className={`pagination-btn ${currentPage === idx + 1 ? 'active' : ''}`}
-                                onClick={() => setCurrentPage(idx + 1)}
-                            >
-                                {idx + 1}
-                            </button>
-                        ))}
-                        <button
-                            className="pagination-btn"
-                            disabled={currentPage === totalPages}
-                            onClick={() => setCurrentPage(p => p + 1)}
-                        >
-                            <ChevronRight size={16} />
-                        </button>
-                    </div>
+                    ))}
+                    <button
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="p-2 border border-gray-300 rounded-[var(--border-radius-base)] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 };

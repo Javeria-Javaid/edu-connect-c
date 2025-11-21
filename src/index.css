@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Global Styles */
 :root {
   --primary-color: #2563eb;
@@ -41,7 +43,8 @@ body {
 
 /* --- Consolidated Button Styles (Moved from Hero.css) --- */
 .btn {
-  padding: 0.75rem 2rem; /* Adjusted for consistency */
+  padding: 0.75rem 2rem;
+  /* Adjusted for consistency */
   border-radius: var(--border-radius-base);
   font-size: 1rem;
   font-weight: 600;
@@ -50,7 +53,8 @@ body {
   text-decoration: none;
   display: inline-block;
   text-align: center;
-  border: 2px solid transparent; /* Ensure consistency */
+  border: 2px solid transparent;
+  /* Ensure consistency */
 }
 
 /* Primary Button Styles (Used by Hero and CTA) */
@@ -77,11 +81,11 @@ body {
 
 .btn.secondary:hover {
   background: white;
-  color: #66a1be; /* Changed hover color to match primary */
+  color: #66a1be;
+  /* Changed hover color to match primary */
 }
 
 .btn.large {
   padding: 1rem 3rem;
   font-size: 1.125rem;
 }
-
