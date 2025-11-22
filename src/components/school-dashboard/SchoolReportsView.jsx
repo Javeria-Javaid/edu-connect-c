@@ -18,6 +18,7 @@ import AcademicReports from './reports/AcademicReports';
 import FinanceReports from './reports/FinanceReports';
 import TransportReports from './reports/TransportReports';
 import CustomReports from './reports/CustomReports';
+import './SchoolReportsView.css';
 
 const SchoolReportsView = () => {
     const [activeView, setActiveView] = useState('overview');
@@ -61,46 +62,44 @@ const SchoolReportsView = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 font-sans">
-            <div className="max-w-7xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <div>
-                        <div className="flex items-center gap-3">
-                            {activeView !== 'overview' && (
-                                <button
-                                    onClick={() => setActiveView('overview')}
-                                    className="p-2 hover:bg-gray-100 rounded-full transition-colors group"
-                                    title="Back to Overview"
-                                >
-                                    <ArrowLeft className="w-5 h-5 text-gray-500 group-hover:text-[#2A6EF2]" />
-                                </button>
-                            )}
-                            <h1 className="text-2xl font-bold text-slate-800">
-                                {activeView === 'overview' ? 'Reports Dashboard' : reportTypes.find(t => t.id === activeView)?.label}
-                            </h1>
-                        </div>
-                        <p className="text-slate-500 mt-1 ml-1 text-sm">
+        <div className="reports-container">
+            {/* Header */}
+            <div className="reports-header">
+                <div className="header-left">
+                    {activeView !== 'overview' && (
+                        <button
+                            onClick={() => setActiveView('overview')}
+                            className="back-button"
+                            title="Back to Overview"
+                        >
+                            <ArrowLeft style={{ width: '20px', height: '20px', color: '#64748b' }} />
+                        </button>
+                    )}
+                    <div className="header-content">
+                        <h1>
+                            {activeView === 'overview' ? 'Reports Dashboard' : reportTypes.find(t => t.id === activeView)?.label}
+                        </h1>
+                        <p>
                             {activeView === 'overview'
                                 ? 'Centralized analytics and reporting hub for your school'
                                 : `Detailed ${activeView} analytics and export options`}
                         </p>
                     </div>
-
-                    <div className="flex gap-3">
-                        <button className="px-4 py-2 bg-white border border-[#2A6EF2] text-[#2A6EF2] rounded-lg text-sm font-semibold hover:bg-blue-50 transition-all">
-                            Export View
-                        </button>
-                        <button className="px-4 py-2 bg-[#2A6EF2] text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-all shadow-sm">
-                            Generate New Report
-                        </button>
-                    </div>
                 </div>
 
-                {/* Main Content */}
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    {renderContent()}
+                <div className="header-actions">
+                    <button className="btn-secondary">
+                        Export View
+                    </button>
+                    <button className="btn-primary">
+                        Generate New Report
+                    </button>
                 </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="reports-content">
+                {renderContent()}
             </div>
         </div>
     );
