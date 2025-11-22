@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Search, Filter, MoreVertical, Download, Trash2, Edit, Eye } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import './DataTable.css';
 
 const DataTable = ({
     columns,
@@ -7,23 +8,14 @@ const DataTable = ({
     selectable = false,
     onSelectionChange,
     onQuickAction,
-    pageSize = 10,
-    searchPlaceholder = "Search..."
+    pageSize = 10
 }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
-    // Filter data based on search term
-    const filteredData = data.filter(item =>
-        Object.values(item).some(val =>
-            String(val).toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
-
     // Sort data
-    const sortedData = [...filteredData].sort((a, b) => {
+    const sortedData = [...data].sort((a, b) => {
         if (!sortConfig.key) return 0;
         const aVal = a[sortConfig.key];
         const bVal = b[sortConfig.key];
@@ -66,41 +58,17 @@ const DataTable = ({
     };
 
     return (
-        <div className="w-full">
-            {/* Table Actions Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
-                <div className="relative w-full sm:w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <input
-                        type="text"
-                        placeholder={searchPlaceholder}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-[var(--border-radius-base)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-                <div className="flex gap-2">
-                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-[var(--border-radius-base)] text-sm text-[var(--text-secondary)] hover:bg-gray-50 transition-colors">
-                        <Filter className="w-4 h-4 mr-2" />
-                        Filter
-                    </button>
-                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-[var(--border-radius-base)] text-sm text-[var(--text-secondary)] hover:bg-gray-50 transition-colors">
-                        <Download className="w-4 h-4 mr-2" />
-                        Export
-                    </button>
-                </div>
-            </div>
-
+        <div className="data-table-wrapper">
             {/* Table */}
-            <div className="overflow-x-auto border border-gray-200 rounded-[var(--border-radius-base)] bg-white">
-                <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-[var(--text-secondary)] uppercase bg-[var(--surface-muted)] border-b border-gray-200">
+            <div className="table-container">
+                <table className="data-table">
+                    <thead className="table-header">
                         <tr>
                             {selectable && (
-                                <th className="p-4 w-4">
+                                <th className="checkbox-cell">
                                     <input
                                         type="checkbox"
-                                        className="w-4 h-4 text-[var(--primary-color)] border-gray-300 rounded focus:ring-[var(--primary-color)]"
+                                        className="table-checkbox"
                                         onChange={handleSelectAll}
                                         checked={paginatedData.length > 0 && selectedRows.length === paginatedData.length}
                                     />
@@ -109,52 +77,52 @@ const DataTable = ({
                             {columns.map((col) => (
                                 <th
                                     key={col.key}
-                                    className={`px-6 py-3 font-semibold tracking-wide ${col.sortable ? 'cursor-pointer hover:text-[var(--primary-color)]' : ''}`}
+                                    className={col.sortable ? 'sortable' : ''}
                                     onClick={() => col.sortable && handleSort(col.key)}
                                 >
-                                    <div className="flex items-center gap-1">
+                                    <div className="header-content">
                                         {col.label}
                                         {sortConfig.key === col.key && (
-                                            <span className="text-[var(--primary-color)]">
+                                            <span className="sort-indicator">
                                                 {sortConfig.direction === 'asc' ? '↑' : '↓'}
                                             </span>
                                         )}
                                     </div>
                                 </th>
                             ))}
-                            {onQuickAction && <th className="px-6 py-3 text-right">Actions</th>}
+                            {onQuickAction && <th style={{ textAlign: 'right' }}>Actions</th>}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="table-body">
                         {paginatedData.length > 0 ? (
                             paginatedData.map((row, index) => (
                                 <tr
                                     key={row.id || index}
-                                    className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-[var(--surface-muted)]'}`}
+                                    className="table-row"
                                 >
                                     {selectable && (
-                                        <td className="p-4 w-4">
+                                        <td className="table-cell checkbox-cell">
                                             <input
                                                 type="checkbox"
-                                                className="w-4 h-4 text-[var(--primary-color)] border-gray-300 rounded focus:ring-[var(--primary-color)]"
+                                                className="table-checkbox"
                                                 checked={selectedRows.includes(row.id)}
                                                 onChange={() => handleSelectRow(row.id)}
                                             />
                                         </td>
                                     )}
                                     {columns.map((col) => (
-                                        <td key={col.key} className="px-6 py-4 text-[var(--text-primary)]">
+                                        <td key={col.key} className="table-cell">
                                             {col.render ? col.render(row) : row[col.key]}
                                         </td>
                                     ))}
                                     {onQuickAction && (
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex justify-end gap-2">
+                                        <td className="table-cell actions-cell">
+                                            <div className="action-buttons-group">
                                                 {onQuickAction(row).map((action, i) => (
                                                     <button
                                                         key={i}
                                                         onClick={action.onClick}
-                                                        className="p-1.5 text-gray-500 hover:text-[var(--primary-color)] hover:bg-blue-50 rounded-md transition-colors"
+                                                        className="action-btn"
                                                         title={action.label}
                                                     >
                                                         {action.icon}
@@ -167,8 +135,8 @@ const DataTable = ({
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={columns.length + (selectable ? 1 : 0) + (onQuickAction ? 1 : 0)} className="px-6 py-8 text-center text-gray-500">
-                                    No data found matching your search.
+                                <td colSpan={columns.length + (selectable ? 1 : 0) + (onQuickAction ? 1 : 0)} className="empty-state">
+                                    No data found.
                                 </td>
                             </tr>
                         )}
@@ -177,26 +145,23 @@ const DataTable = ({
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between mt-4">
-                <span className="text-sm text-[var(--text-secondary)]">
-                    Showing <span className="font-medium text-[var(--text-primary)]">{startIndex + 1}</span> to <span className="font-medium text-[var(--text-primary)]">{Math.min(startIndex + pageSize, sortedData.length)}</span> of <span className="font-medium text-[var(--text-primary)]">{sortedData.length}</span> entries
+            <div className="pagination-container">
+                <span className="pagination-info">
+                    Showing <span className="highlight">{startIndex + 1}</span> to <span className="highlight">{Math.min(startIndex + pageSize, sortedData.length)}</span> of <span className="highlight">{sortedData.length}</span> entries
                 </span>
-                <div className="flex gap-2">
+                <div className="pagination-controls">
                     <button
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
-                        className="p-2 border border-gray-300 rounded-[var(--border-radius-base)] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="pagination-btn"
                     >
-                        <ChevronLeft className="w-4 h-4" />
+                        <ChevronLeft size={16} />
                     </button>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                         <button
                             key={page}
                             onClick={() => setCurrentPage(page)}
-                            className={`w-8 h-8 text-sm font-medium rounded-[var(--border-radius-base)] ${currentPage === page
-                                    ? 'bg-[var(--primary-color)] text-white'
-                                    : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
-                                }`}
+                            className={`pagination-page-btn ${currentPage === page ? 'active' : ''}`}
                         >
                             {page}
                         </button>
@@ -204,9 +169,9 @@ const DataTable = ({
                     <button
                         onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
-                        className="p-2 border border-gray-300 rounded-[var(--border-radius-base)] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="pagination-btn"
                     >
-                        <ChevronRight className="w-4 h-4" />
+                        <ChevronRight size={16} />
                     </button>
                 </div>
             </div>
