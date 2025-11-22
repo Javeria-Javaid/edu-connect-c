@@ -110,24 +110,23 @@ const PaymentBillingSettings = () => {
                             <p style={{ fontSize: '0.75rem', opacity: 0.9 }}>per month</p>
                         </div>
                     </div>
-                    <div style={{
-                        display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', opacity: 0.9' }}>
-                            <Calendar size = { 14 } />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', opacity: 0.9 }}>
+                        <Calendar size={14} />
                         <span>Next billing date: Dec 20, 2024</span>
                     </div>
+                </div>
             </div>
-        </div>
 
-            {/* Save Button Footer */ }
-    <div className="settings-footer">
-        <div className="settings-footer-content">
-            <button className="settings-btn settings-btn-secondary">Cancel</button>
-            <button className="settings-btn settings-btn-primary">
-                <Save size={18} />
-                Save Changes
-            </button>
-        </div>
-    </div>
+            {/* Save Button Footer */}
+            <div className="settings-footer">
+                <div className="settings-footer-content">
+                    <button className="settings-btn settings-btn-secondary">Cancel</button>
+                    <button className="settings-btn settings-btn-primary">
+                        <Save size={18} />
+                        Save Changes
+                    </button>
+                </div>
+            </div>
         </div >
     );
 };
