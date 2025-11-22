@@ -67,9 +67,9 @@ const StudentReports = () => {
             sortable: true,
             render: (row) => (
                 <span className={`status-badge ${row.performance === 'Excellent' ? 'status-excellent' :
-                    row.performance === 'Good' ? 'status-good' :
-                        row.performance === 'Average' ? 'status-average' :
-                            'status-poor'
+                        row.performance === 'Good' ? 'status-good' :
+                            row.performance === 'Average' ? 'status-average' :
+                                'status-poor'
                     }`}>
                     {row.performance}
                 </span>
@@ -120,7 +120,7 @@ const StudentReports = () => {
                                     <Icon size={24} />
                                 </div>
                             </div>
-                            <div className="report-summary-footer">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px', fontSize: '0.85rem', fontWeight: '600' }}>
                                 <span style={{ color: stat.change.startsWith('+') ? '#10b981' : '#ef4444' }}>
                                     {stat.change}
                                 </span>
@@ -131,7 +131,7 @@ const StudentReports = () => {
                 })}
             </div>
 
-            <div className="report-content-grid">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px' }}>
                 {/* Filters & Table */}
                 <div className="report-table-section">
                     <div className="report-table-header">
@@ -159,7 +159,7 @@ const StudentReports = () => {
                 {/* Charts Side Panel */}
                 <div className="report-chart-card">
                     <h3 className="report-chart-title">Performance Distribution</h3>
-                    <div style={{ height: '350px', marginBottom: '20px' }}>
+                    <div style={{ height: '400px', marginBottom: '20px', padding: '10px 0' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
@@ -167,7 +167,7 @@ const StudentReports = () => {
                                     cx="50%"
                                     cy="45%"
                                     innerRadius={70}
-                                    outerRadius={110}
+                                    outerRadius={105}
                                     paddingAngle={5}
                                     dataKey="value"
                                 >
