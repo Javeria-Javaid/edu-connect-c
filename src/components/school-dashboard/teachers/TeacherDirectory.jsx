@@ -5,6 +5,7 @@ import DataTable from '../shared/DataTable';
 import FilterPanel from '../shared/FilterPanel';
 import AddTeacherModal from './AddTeacherModal';
 import { mockTeachers, teacherFilters } from './mockData';
+import './TeacherDirectory.css';
 
 const TeacherDirectory = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -54,7 +55,7 @@ const TeacherDirectory = () => {
             key: 'photo',
             label: 'Photo',
             render: (teacher) => (
-                <img src={teacher.photo} alt={teacher.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                <img src={teacher.photo} alt={teacher.name} className="teacher-photo" />
             )
         },
         {
@@ -62,9 +63,9 @@ const TeacherDirectory = () => {
             label: 'Name',
             sortable: true,
             render: (teacher) => (
-                <div>
-                    <div className="font-medium text-slate-800">{teacher.name}</div>
-                    <div className="text-xs text-slate-500">{teacher.designation}</div>
+                <div className="teacher-info-cell">
+                    <div className="teacher-name">{teacher.name}</div>
+                    <div className="teacher-designation">{teacher.designation}</div>
                 </div>
             )
         },
@@ -72,9 +73,9 @@ const TeacherDirectory = () => {
             key: 'subjects',
             label: 'Subjects',
             render: (teacher) => (
-                <div className="flex flex-wrap gap-1">
+                <div className="subject-tags">
                     {teacher.subjects.map((subject, idx) => (
-                        <span key={idx} className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-md border border-blue-100">
+                        <span key={idx} className="subject-tag">
                             {subject}
                         </span>
                     ))}
@@ -85,9 +86,9 @@ const TeacherDirectory = () => {
             key: 'classes',
             label: 'Classes',
             render: (teacher) => (
-                <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-slate-700">{teacher.classCount}</span>
-                    <span className="text-xs text-slate-500">classes</span>
+                <div className="class-count">
+                    <span className="class-count-number">{teacher.classCount}</span>
+                    <span className="class-count-label">classes</span>
                 </div>
             )
         },
@@ -96,7 +97,7 @@ const TeacherDirectory = () => {
             label: 'Weekly Load',
             sortable: true,
             render: (teacher) => (
-                <span className="text-sm font-medium text-slate-700">{teacher.weeklyLoad} hrs</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: '500', color: '#475569' }}>{teacher.weeklyLoad} hrs</span>
             )
         },
         {
@@ -104,18 +105,19 @@ const TeacherDirectory = () => {
             label: 'Attendance',
             sortable: true,
             render: (teacher) => (
-                <div className="w-24">
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden mb-1">
+                <div style={{ width: '100px' }}>
+                    <div style={{ height: '6px', width: '100%', background: '#f1f5f9', borderRadius: '3px', marginBottom: '4px', overflow: 'hidden' }}>
                         <div
-                            className="h-full rounded-full"
                             style={{
+                                height: '100%',
                                 width: `${teacher.attendance}%`,
-                                background: teacher.attendance >= 90 ? '#3AC47D' :
-                                    teacher.attendance >= 75 ? '#f59e0b' : '#ef4444'
+                                background: teacher.attendance >= 90 ? '#10b981' :
+                                    teacher.attendance >= 75 ? '#f59e0b' : '#ef4444',
+                                borderRadius: '3px'
                             }}
                         />
                     </div>
-                    <span className="text-xs text-slate-500">{teacher.attendance}%</span>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{teacher.attendance}%</span>
                 </div>
             )
         },
@@ -124,7 +126,7 @@ const TeacherDirectory = () => {
             label: 'Type',
             sortable: true,
             render: (teacher) => (
-                <span className="px-2.5 py-1 rounded-md bg-gray-100 text-slate-600 text-xs font-medium border border-gray-200">
+                <span className="employment-badge">
                     {teacher.employmentType}
                 </span>
             )
@@ -134,13 +136,14 @@ const TeacherDirectory = () => {
             label: 'Status',
             sortable: true,
             render: (teacher) => {
-                const statusColors = {
-                    Active: 'bg-green-50 text-[#3AC47D]',
-                    'On Leave': 'bg-orange-50 text-orange-500',
-                    Inactive: 'bg-gray-100 text-gray-500'
-                };
+                const statusClass = {
+                    Active: 'badge-success',
+                    'On Leave': 'badge-warning',
+                    Inactive: 'badge-neutral'
+                }[teacher.status] || 'badge-neutral';
+
                 return (
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[teacher.status] || 'bg-gray-100 text-gray-600'}`}>
+                    <span className={`badge ${statusClass}`}>
                         {teacher.status}
                     </span>
                 );
@@ -173,35 +176,35 @@ const TeacherDirectory = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 font-sans">
-            <div className="max-w-7xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-800">Teacher Directory</h1>
-                        <p className="text-sm text-slate-500 mt-1">
-                            {filteredTeachers.length} teacher{filteredTeachers.length !== 1 ? 's' : ''} found
-                        </p>
-                    </div>
-                    <div className="flex gap-3">
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                            <Download size={18} />
-                            Export
-                        </button>
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#2A6EF2] text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm"
-                        >
-                            <Plus size={18} />
-                            Add Teacher
-                        </button>
-                    </div>
+        <div className="teacher-directory-container">
+            {/* Header */}
+            <div className="directory-header">
+                <div className="header-content">
+                    <h1>Teacher Directory</h1>
+                    <p>
+                        {filteredTeachers.length} teacher{filteredTeachers.length !== 1 ? 's' : ''} found
+                    </p>
                 </div>
+                <div className="header-actions">
+                    <button className="btn-secondary">
+                        <Download size={18} />
+                        Export
+                    </button>
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="btn-primary"
+                    >
+                        <Plus size={18} />
+                        Add Teacher
+                    </button>
+                </div>
+            </div>
 
-                {/* Controls & Content */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-4 border-b border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-center bg-white">
-                        <div className="w-full md:w-96">
+            {/* Controls & Content */}
+            <div className="directory-card">
+                <div className="controls-section" style={{ border: 'none', boxShadow: 'none', paddingBottom: '0' }}>
+                    <div className="search-filter-row">
+                        <div className="search-wrapper">
                             <SearchBar
                                 placeholder="Search by name, subject, email, or phone..."
                                 onSearch={setSearchTerm}
@@ -213,20 +216,24 @@ const TeacherDirectory = () => {
                             onFilterChange={setActiveFilters}
                         />
                     </div>
+                </div>
 
-                    {/* Bulk Actions Bar */}
-                    {selectedTeachers.length > 0 && (
-                        <div className="bg-blue-50 px-6 py-3 flex items-center justify-between border-b border-blue-100 animate-in slide-in-from-top-2">
-                            <span className="text-sm font-medium text-blue-800">{selectedTeachers.length} selected</span>
-                            <div className="flex gap-2">
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Send Message</button>
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Update Schedule</button>
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Export Data</button>
+                {/* Bulk Actions Bar */}
+                {selectedTeachers.length > 0 && (
+                    <div style={{ padding: '0 20px' }}>
+                        <div className="bulk-actions-bar">
+                            <span className="selected-count">{selectedTeachers.length} selected</span>
+                            <div className="action-buttons">
+                                <button className="btn-action-sm">Send Message</button>
+                                <button className="btn-action-sm">Update Schedule</button>
+                                <button className="btn-action-sm">Export Data</button>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Data Table */}
+                {/* Data Table */}
+                <div style={{ padding: '20px' }}>
                     <DataTable
                         columns={columns}
                         data={filteredTeachers}
