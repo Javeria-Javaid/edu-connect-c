@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Download, Plus, Save, Clock, Settings } from 'lucide-react';
+import './ReportSubSection.css';
 
 const CustomReports = () => {
     const [reportName, setReportName] = useState('');
@@ -29,137 +30,247 @@ const CustomReports = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500">
-            <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-800">Custom Report Builder</h2>
-                <div className="flex gap-2">
-                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
-                        <Clock className="w-4 h-4 mr-2" />
-                        Scheduled Reports
-                    </button>
-                    <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
-                        <Save className="w-4 h-4 mr-2" />
-                        Saved Templates
-                    </button>
-                </div>
+        <div className="report-subsection-container">
+            {/* Header */}
+            <div className="report-section-header">
+                <h2 className="report-section-title">Custom Report Builder</h2>
+                <p className="report-section-subtitle">Create and export custom reports</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Quick Actions */}
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Clock size={16} />
+                    Scheduled Reports
+                </button>
+                <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Save size={16} />
+                    Saved Templates
+                </button>
+            </div>
+
+            <div className="report-content-grid">
                 {/* Configuration Panel */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 className="text-md font-semibold text-gray-700 mb-4 flex items-center">
-                            <Settings className="w-4 h-4 mr-2 text-blue-500" />
+                <div className="report-table-section">
+                    <div className="report-table-header">
+                        <h3 className="report-table-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <Settings size={20} style={{ color: '#3b82f6' }} />
                             Report Configuration
                         </h3>
+                    </div>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Report Name</label>
-                                <input
-                                    type="text"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="e.g., Monthly Student Attendance Summary"
-                                    value={reportName}
-                                    onChange={(e) => setReportName(e.target.value)}
-                                />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginTop: '20px' }}>
+                        {/* Report Name */}
+                        <div>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '8px' }}>
+                                Report Name
+                            </label>
+                            <input
+                                type="text"
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 12px',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: '8px',
+                                    fontSize: '0.875rem',
+                                    outline: 'none',
+                                    transition: 'all 0.2s'
+                                }}
+                                placeholder="e.g., Monthly Student Attendance Summary"
+                                value={reportName}
+                                onChange={(e) => setReportName(e.target.value)}
+                                onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                            />
+                        </div>
+
+                        {/* Module Selection */}
+                        <div>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '8px' }}>
+                                Select Module
+                            </label>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {modules.map(module => (
+                                    <button
+                                        key={module.id}
+                                        onClick={() => {
+                                            setSelectedModule(module.id);
+                                            setSelectedFields([]);
+                                        }}
+                                        style={{
+                                            padding: '8px 16px',
+                                            borderRadius: '8px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '600',
+                                            border: '1px solid',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s',
+                                            background: selectedModule === module.id ? '#eff6ff' : '#f8fafc',
+                                            color: selectedModule === module.id ? '#2563eb' : '#64748b',
+                                            borderColor: selectedModule === module.id ? '#bfdbfe' : '#e2e8f0'
+                                        }}
+                                    >
+                                        {module.label}
+                                    </button>
+                                ))}
                             </div>
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Select Module</label>
-                                <div className="flex gap-2">
-                                    {modules.map(module => (
-                                        <button
-                                            key={module.id}
-                                            onClick={() => {
-                                                setSelectedModule(module.id);
-                                                setSelectedFields([]);
+                        {/* Field Selection */}
+                        <div>
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '12px' }}>
+                                Select Fields to Include
+                            </label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                                {fields[selectedModule].map(field => (
+                                    <label
+                                        key={field}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            padding: '12px',
+                                            borderRadius: '8px',
+                                            border: '1px solid',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s',
+                                            background: selectedFields.includes(field) ? '#eff6ff' : 'white',
+                                            borderColor: selectedFields.includes(field) ? '#bfdbfe' : '#e2e8f0'
+                                        }}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            style={{
+                                                width: '16px',
+                                                height: '16px',
+                                                accentColor: '#3b82f6',
+                                                cursor: 'pointer'
                                             }}
-                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedModule === module.id
-                                                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                                                    : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
-                                                }`}
-                                        >
-                                            {module.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Select Fields to Include</label>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {fields[selectedModule].map(field => (
-                                        <label
-                                            key={field}
-                                            className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all ${selectedFields.includes(field)
-                                                    ? 'bg-blue-50 border-blue-200 ring-1 ring-blue-200'
-                                                    : 'bg-white border-gray-200 hover:border-blue-300'
-                                                }`}
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                                                checked={selectedFields.includes(field)}
-                                                onChange={() => toggleField(field)}
-                                            />
-                                            <span className="ml-2 text-sm text-gray-700">{field}</span>
-                                        </label>
-                                    ))}
-                                </div>
+                                            checked={selectedFields.includes(field)}
+                                            onChange={() => toggleField(field)}
+                                        />
+                                        <span style={{ marginLeft: '8px', fontSize: '0.875rem', color: '#475569' }}>{field}</span>
+                                    </label>
+                                ))}
                             </div>
                         </div>
+                    </div>
 
-                        <div className="mt-6 pt-6 border-t border-gray-100 flex justify-end gap-3">
-                            <button className="px-4 py-2 text-gray-600 hover:text-gray-800 text-sm font-medium">
-                                Reset
-                            </button>
-                            <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 shadow-sm">
-                                <FileText className="w-4 h-4 mr-2" />
-                                Generate Preview
-                            </button>
-                        </div>
+                    {/* Action Buttons */}
+                    <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                        <button
+                            style={{
+                                padding: '10px 16px',
+                                fontSize: '0.875rem',
+                                fontWeight: '600',
+                                color: '#64748b',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}
+                            onClick={() => {
+                                setReportName('');
+                                setSelectedFields([]);
+                            }}
+                        >
+                            Reset
+                        </button>
+                        <button className="report-export-btn">
+                            <FileText size={16} />
+                            Generate Preview
+                        </button>
                     </div>
                 </div>
 
                 {/* Preview Panel */}
-                <div className="lg:col-span-1">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-full">
-                        <h3 className="text-md font-semibold text-gray-700 mb-4">Preview</h3>
+                <div className="report-chart-card">
+                    <h3 className="report-chart-title">Preview</h3>
 
-                        {selectedFields.length > 0 ? (
-                            <div className="space-y-4">
-                                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                    <h4 className="font-medium text-gray-900 mb-1">{reportName || 'Untitled Report'}</h4>
-                                    <p className="text-xs text-gray-500">Module: {modules.find(m => m.id === selectedModule)?.label}</p>
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {selectedFields.map(field => (
-                                            <span key={field} className="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600">
-                                                {field}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="text-center pt-8">
-                                    <p className="text-sm text-gray-500 mb-4">Ready to generate report?</p>
-                                    <button className="w-full flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 shadow-sm">
-                                        <Download className="w-4 h-4 mr-2" />
-                                        Download Excel
-                                    </button>
-                                    <button className="w-full flex items-center justify-center px-4 py-2 mt-2 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
-                                        <FileText className="w-4 h-4 mr-2" />
-                                        Download PDF
-                                    </button>
+                    {selectedFields.length > 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                                <h4 style={{ fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>
+                                    {reportName || 'Untitled Report'}
+                                </h4>
+                                <p style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                                    Module: {modules.find(m => m.id === selectedModule)?.label}
+                                </p>
+                                <div style={{ marginTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {selectedFields.map(field => (
+                                        <span
+                                            key={field}
+                                            style={{
+                                                padding: '4px 10px',
+                                                background: 'white',
+                                                border: '1px solid #e2e8f0',
+                                                borderRadius: '6px',
+                                                fontSize: '0.75rem',
+                                                color: '#64748b'
+                                            }}
+                                        >
+                                            {field}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
-                        ) : (
-                            <div className="h-64 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
-                                <FileText className="w-12 h-12 mb-2 opacity-20" />
-                                <p className="text-sm">Select fields to see preview</p>
+
+                            <div style={{ textAlign: 'center', paddingTop: '24px' }}>
+                                <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '16px' }}>
+                                    Ready to generate report?
+                                </p>
+                                <button
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        padding: '10px 16px',
+                                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        marginBottom: '8px',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                                    onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                                >
+                                    <Download size={16} />
+                                    Download Excel
+                                </button>
+                                <button
+                                    className="btn-secondary"
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px'
+                                    }}
+                                >
+                                    <FileText size={16} />
+                                    Download PDF
+                                </button>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <div style={{
+                            height: '280px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: '2px dashed #e2e8f0',
+                            borderRadius: '12px',
+                            color: '#cbd5e1'
+                        }}>
+                            <FileText size={48} style={{ opacity: 0.2, marginBottom: '8px' }} />
+                            <p style={{ fontSize: '0.875rem' }}>Select fields to see preview</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
