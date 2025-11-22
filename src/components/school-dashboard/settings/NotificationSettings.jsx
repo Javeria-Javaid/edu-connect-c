@@ -1,112 +1,133 @@
 import React, { useState } from 'react';
-import { Bell, Mail, MessageSquare, Calendar, CreditCard, UserPlus } from 'lucide-react';
+import { Save, Bell, Mail, MessageSquare, Phone } from 'lucide-react';
+import './Settings.css';
 
 const NotificationSettings = () => {
-    const [toggles, setToggles] = useState({
-        admissionUpdates: true,
+    const [settings, setSettings] = useState({
+        emailNotifications: true,
+        smsNotifications: false,
+        pushNotifications: true,
+        weeklyReports: true,
+        attendanceAlerts: true,
         feeReminders: true,
-        examSchedules: true,
-        emailAlerts: true,
-        smsAlerts: false
+        examResults: true,
+        eventUpdates: false
     });
 
     const handleToggle = (key) => {
-        setToggles(prev => ({ ...prev, [key]: !prev[key] }));
+        setSettings(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
+    const notificationTypes = [
+        { key: 'emailNotifications', label: 'Email Notifications', desc: 'Receive notifications via email', icon: Mail },
+        { key: 'smsNotifications', label: 'SMS Notifications', desc: 'Receive notifications via SMS', icon: MessageSquare },
+        { key: 'pushNotifications', label: 'Push Notifications', desc: 'Receive push notifications in browser', icon: Bell },
+    ];
+
+    const alertTypes = [
+        { key: 'weeklyReports', label: 'Weekly Reports', desc: 'Summary of school activities every week' },
+        { key: 'attendanceAlerts', label: 'Attendance Alerts', desc: 'Notify when student attendance is low' },
+        { key: 'feeReminders', label: 'Fee Reminders', desc: 'Remind parents about pending fees' },
+        { key: 'examResults', label: 'Exam Results', desc: 'Notify when exam results are published' },
+        { key: 'eventUpdates', label: 'Event Updates', desc: 'Updates about upcoming school events' },
+    ];
+
     return (
-        <div className="space-y-6">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h2 className="text-xl font-bold text-slate-800">Notification Preferences</h2>
-                <p className="text-sm text-slate-500 mt-1">Control what alerts you and your users receive.</p>
+        <div className="settings-section">
+            {/* Header */}
+            <div className="settings-header-card">
+                <h2 className="settings-header-title">Notification Settings</h2>
+                <p className="settings-header-subtitle">Configure how you receive alerts and updates.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Alert Types */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                        <Bell size={20} className="text-[#2A6EF2]" />
-                        Alert Types
-                    </h3>
-                    <div className="space-y-6">
-                        {[
-                            { key: 'admissionUpdates', label: 'Admission Updates', icon: UserPlus, desc: 'New applications and status changes' },
-                            { key: 'feeReminders', label: 'Fee Reminders', icon: CreditCard, desc: 'Upcoming due dates and overdue alerts' },
-                            { key: 'examSchedules', label: 'Exam Schedules', icon: Calendar, desc: 'Timetable publications and changes' },
-                        ].map((item) => (
-                            <div key={item.key} className="flex items-start justify-between">
-                                <div className="flex gap-3">
-                                    <div className="p-2 bg-blue-50 text-[#2A6EF2] rounded-lg h-fit">
-                                        <item.icon size={18} />
+            {/* Notification Channels */}
+            <div className="settings-card">
+                <h3 className="settings-card-title">Notification Channels</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {notificationTypes.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                            <div
+                                key={item.key}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '16px',
+                                    background: '#f8fafc',
+                                    borderRadius: '12px',
+                                    border: '1px solid #e2e8f0'
+                                }}
+                            >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e2e8f0' }}>
+                                        <Icon size={20} style={{ color: '#3b82f6' }} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium text-slate-800">{item.label}</p>
-                                        <p className="text-xs text-slate-500 mt-0.5">{item.desc}</p>
+                                        <p style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1e293b' }}>{item.label}</p>
+                                        <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>{item.desc}</p>
                                     </div>
                                 </div>
-                                <label className="relative inline-flex items-center cursor-pointer mt-1">
+                                <label style={{ cursor: 'pointer' }}>
                                     <input
                                         type="checkbox"
-                                        checked={toggles[item.key]}
+                                        checked={settings[item.key]}
                                         onChange={() => handleToggle(item.key)}
-                                        className="sr-only peer"
+                                        style={{ display: 'none' }}
                                     />
-                                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3AC47D]"></div>
+                                    <div className={`settings-toggle ${settings[item.key] ? 'active' : ''}`}>
+                                        <div className="settings-toggle-slider"></div>
+                                    </div>
                                 </label>
                             </div>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
+            </div>
 
-                {/* Delivery Channels */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                        <Mail size={20} className="text-[#2A6EF2]" />
-                        Delivery Channels
-                    </h3>
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-gray-100 rounded-lg">
-                                    <Mail size={20} className="text-slate-600" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-medium text-slate-800">Email Notifications</p>
-                                    <p className="text-xs text-slate-500">Send to registered email addresses</p>
-                                </div>
+            {/* Alert Types */}
+            <div className="settings-card">
+                <h3 className="settings-card-title">Alert Types</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {alertTypes.map((item) => (
+                        <div
+                            key={item.key}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '12px 0',
+                                borderBottom: '1px solid #f1f5f9'
+                            }}
+                        >
+                            <div>
+                                <p style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1e293b' }}>{item.label}</p>
+                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>{item.desc}</p>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
+                            <label style={{ cursor: 'pointer' }}>
                                 <input
                                     type="checkbox"
-                                    checked={toggles.emailAlerts}
-                                    onChange={() => handleToggle('emailAlerts')}
-                                    className="sr-only peer"
+                                    checked={settings[item.key]}
+                                    onChange={() => handleToggle(item.key)}
+                                    style={{ display: 'none' }}
                                 />
-                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3AC47D]"></div>
+                                <div className={`settings-toggle ${settings[item.key] ? 'active' : ''}`}>
+                                    <div className="settings-toggle-slider"></div>
+                                </div>
                             </label>
                         </div>
+                    ))}
+                </div>
+            </div>
 
-                        <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-gray-100 rounded-lg">
-                                    <MessageSquare size={20} className="text-slate-600" />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-medium text-slate-800">SMS Alerts</p>
-                                    <p className="text-xs text-slate-500">Send to registered mobile numbers</p>
-                                </div>
-                            </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={toggles.smsAlerts}
-                                    onChange={() => handleToggle('smsAlerts')}
-                                    className="sr-only peer"
-                                />
-                                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3AC47D]"></div>
-                            </label>
-                        </div>
-                    </div>
+            {/* Save Button Footer */}
+            <div className="settings-footer">
+                <div className="settings-footer-content">
+                    <button className="settings-btn settings-btn-secondary">Cancel</button>
+                    <button className="settings-btn settings-btn-primary">
+                        <Save size={18} />
+                        Save Changes
+                    </button>
                 </div>
             </div>
         </div>
