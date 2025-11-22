@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import DataTable from '../shared/DataTable';
 import FilterPanel from '../shared/FilterPanel';
 import { reportsOverviewData } from './mockData';
-import { FileText, Download, Calendar, BarChart2, CheckCircle, XCircle, Clock } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { FileText, Download, Calendar, CheckCircle, XCircle, Clock } from 'lucide-react';
+import './ReportSubSection.css';
 
 const AttendanceReports = () => {
     const [filters, setFilters] = useState({});
-    const { attendanceReports } = reportsOverviewData;
+    const { attendanceReports = [] } = reportsOverviewData || {};
 
-    // Mock Summary Data
     const summaryStats = [
-        { label: "Today's Attendance", value: '94.2%', change: '+0.5%', icon: CheckCircle, color: 'green' },
-        { label: 'Absent Today', value: '145', change: '-12', icon: XCircle, color: 'red' },
-        { label: 'Late Arrivals', value: '32', change: '+5', icon: Clock, color: 'orange' },
+        { label: "Today's Attendance", value: '94.2%', change: '+0.5%', icon: CheckCircle, bgColor: '#dcfce7' },
+        { label: 'Absent Today', value: '145', change: '-12', icon: XCircle, bgColor: '#fee2e2' },
+        { label: 'Late Arrivals', value: '32', change: '+5', icon: Clock, bgColor: '#fed7aa' },
     ];
 
     const filterOptions = [
@@ -43,142 +42,92 @@ const AttendanceReports = () => {
     const columns = [
         {
             key: 'date', label: 'Date', sortable: true, render: (row) => (
-                <span className="font-medium text-gray-700">{row.date}</span>
+                <span style={{ fontWeight: '600', color: '#475569' }}>{row.date}</span>
             )
         },
         {
             key: 'class', label: 'Class', sortable: true, render: (row) => (
-                <span className="px-2.5 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs font-bold">
+                <span style={{ padding: '4px 10px', borderRadius: '8px', background: '#f1f5f9', color: '#475569', fontSize: '0.75rem', fontWeight: '700' }}>
                     {row.class}
                 </span>
             )
         },
         {
             key: 'present', label: 'Present', sortable: true, render: (row) => (
-                <span className="text-green-600 font-medium">{row.present}</span>
+                <span style={{ color: '#10b981', fontWeight: '600' }}>{row.present}</span>
             )
         },
         {
             key: 'absent', label: 'Absent', sortable: true, render: (row) => (
-                <span className="text-red-600 font-medium">{row.absent}</span>
+                <span style={{ color: '#ef4444', fontWeight: '600' }}>{row.absent}</span>
             )
         },
         {
             key: 'late', label: 'Late', sortable: true, render: (row) => (
-                <span className="text-orange-600 font-medium">{row.late}</span>
+                <span style={{ color: '#f59e0b', fontWeight: '600' }}>{row.late}</span>
             )
         },
         {
-            key: 'attendanceRate',
-            label: 'Rate',
-            render: (row) => {
-                const rate = Math.round((row.present / row.total) * 100);
-                return (
-                    <div className="flex items-center gap-3">
-                        <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div
-                                className={`h-full rounded-full transition-all duration-500 ${rate >= 95 ? 'bg-green-500' :
-                                    rate >= 85 ? 'bg-blue-500' :
-                                        rate >= 75 ? 'bg-orange-500' : 'bg-red-500'
-                                    }`}
-                                style={{ width: `${rate}%` }}
-                            />
-                        </div>
-                        <span className="text-sm font-bold text-gray-700">{rate}%</span>
+            key: 'percentage', label: 'Attendance %', sortable: true, render: (row) => (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="progress-bar-container">
+                        <div
+                            className="progress-bar-fill"
+                            style={{ width: row.percentage, background: parseInt(row.percentage) >= 90 ? '#10b981' : '#f59e0b' }}
+                        />
                     </div>
-                );
-            }
+                    <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>{row.percentage}</span>
+                </div>
+            )
         },
     ];
 
     const handleQuickAction = (row) => [
         { label: 'View Details', icon: <FileText size={14} />, onClick: () => console.log('View', row) },
-        { label: 'Download PDF', icon: <Download size={14} />, onClick: () => console.log('Download', row) },
+        { label: 'Download Report', icon: <Download size={14} />, onClick: () => console.log('Download', row) },
     ];
 
-    // Transform data for chart
-    const chartData = attendanceReports.map(item => ({
-        name: item.class,
-        Present: item.present,
-        Absent: item.absent,
-        Late: item.late
-    }));
-
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 className="text-xl font-bold text-gray-900">Attendance Analysis</h2>
-                    <p className="text-sm text-gray-500">Daily attendance logs and trends</p>
-                </div>
-                <div className="flex gap-3">
-                    <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Select Date
-                    </button>
-                    <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 hover:shadow-md transition-all shadow-sm">
-                        <Download className="w-4 h-4 mr-2" />
-                        Export Report
-                    </button>
-                </div>
+        <div className="report-subsection-container">
+            <div className="report-section-header">
+                <h2 className="report-section-title">Attendance Logs</h2>
+                <p className="report-section-subtitle">Daily logs and monthly summaries</p>
             </div>
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="report-summary-grid">
                 {summaryStats.map((stat, index) => {
                     const Icon = stat.icon;
                     return (
-                        <div key={index} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                                    <h3 className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</h3>
+                        <div key={index} className="report-summary-card">
+                            <div className="report-summary-header">
+                                <div className="report-summary-content">
+                                    <h3>{stat.label}</h3>
+                                    <p className="report-summary-value">{stat.value}</p>
                                 </div>
-                                <div className={`p-2 rounded-xl bg-${stat.color}-50 text-${stat.color}-600`}>
-                                    <Icon className="w-5 h-5" />
+                                <div className="report-summary-icon" style={{ backgroundColor: stat.bgColor, color: '#3b82f6' }}>
+                                    <Icon size={24} />
                                 </div>
                             </div>
-                            <div className="mt-2 flex items-center text-sm">
-                                <span className={stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}>
+                            <div className="report-summary-footer">
+                                <span style={{ color: stat.change.startsWith('+') ? '#10b981' : '#ef4444' }}>
                                     {stat.change}
                                 </span>
-                                <span className="text-gray-400 ml-1">vs yesterday</span>
+                                <span style={{ color: '#94a3b8' }}>vs yesterday</span>
                             </div>
                         </div>
                     );
                 })}
             </div>
 
-            {/* Chart Section */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold text-gray-900 flex items-center">
-                        <BarChart2 className="w-5 h-5 mr-2 text-blue-600" />
-                        Class-wise Overview
-                    </h3>
+            <div className="report-table-section" style={{ gridColumn: '1 / -1' }}>
+                <div className="report-table-header">
+                    <h3 className="report-table-title">Attendance Records</h3>
+                    <button className="report-export-btn">
+                        <Download size={16} />
+                        Export All
+                    </button>
                 </div>
-                <div className="h-80">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={chartData} barSize={40}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6b7280' }} dy={10} />
-                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6b7280' }} />
-                            <Tooltip
-                                cursor={{ fill: '#f9fafb' }}
-                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                            />
-                            <Legend verticalAlign="top" height={36} iconType="circle" />
-                            <Bar dataKey="Present" stackId="a" fill="#22c55e" radius={[0, 0, 4, 4]} />
-                            <Bar dataKey="Absent" stackId="a" fill="#ef4444" />
-                            <Bar dataKey="Late" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
-
-            {/* Table Section */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                <div className="mb-6">
+                <div className="report-filter-section">
                     <FilterPanel
                         filters={filterOptions}
                         onFilterChange={setFilters}
@@ -189,7 +138,7 @@ const AttendanceReports = () => {
                     data={attendanceReports}
                     selectable={true}
                     onQuickAction={handleQuickAction}
-                    pageSize={10}
+                    pageSize={8}
                 />
             </div>
         </div>
