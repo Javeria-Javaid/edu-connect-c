@@ -5,6 +5,7 @@ import DataTable from '../shared/DataTable';
 import FilterPanel from '../shared/FilterPanel';
 import AddStudentModal from './AddStudentModal';
 import { mockStudents, studentFilters } from './mockData';
+import './StudentDirectory.css';
 
 const StudentDirectory = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -57,7 +58,7 @@ const StudentDirectory = () => {
             key: 'photo',
             label: 'Photo',
             render: (student) => (
-                <img src={student.photo} alt={student.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                <img src={student.photo} alt={student.name} className="student-photo" />
             )
         },
         {
@@ -65,9 +66,9 @@ const StudentDirectory = () => {
             label: 'Name',
             sortable: true,
             render: (student) => (
-                <div>
-                    <div className="font-medium text-slate-800">{student.name}</div>
-                    <div className="text-xs text-slate-500">{student.admissionNumber}</div>
+                <div className="student-info-cell">
+                    <div className="student-name">{student.name}</div>
+                    <div className="student-id">{student.admissionNumber}</div>
                 </div>
             )
         },
@@ -76,7 +77,7 @@ const StudentDirectory = () => {
             label: 'Class',
             sortable: true,
             render: (student) => (
-                <span className="px-2.5 py-1 rounded-md bg-gray-100 text-slate-600 text-xs font-medium border border-gray-200">
+                <span className="class-badge">
                     {student.class}-{student.section}
                 </span>
             )
@@ -85,25 +86,26 @@ const StudentDirectory = () => {
             key: 'rollNumber',
             label: 'Roll No.',
             sortable: true,
-            render: (student) => <span className="text-sm text-slate-600">{student.rollNumber}</span>
+            render: (student) => <span style={{ color: '#64748b', fontSize: '0.9rem' }}>{student.rollNumber}</span>
         },
         {
             key: 'attendance',
             label: 'Attendance',
             sortable: true,
             render: (student) => (
-                <div className="w-24">
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden mb-1">
+                <div style={{ width: '100px' }}>
+                    <div style={{ height: '6px', width: '100%', background: '#f1f5f9', borderRadius: '3px', marginBottom: '4px', overflow: 'hidden' }}>
                         <div
-                            className="h-full rounded-full"
                             style={{
+                                height: '100%',
                                 width: `${student.attendance}%`,
-                                background: student.attendance >= 90 ? '#3AC47D' :
-                                    student.attendance >= 75 ? '#f59e0b' : '#ef4444'
+                                background: student.attendance >= 90 ? '#10b981' :
+                                    student.attendance >= 75 ? '#f59e0b' : '#ef4444',
+                                borderRadius: '3px'
                             }}
                         />
                     </div>
-                    <span className="text-xs text-slate-500">{student.attendance}%</span>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{student.attendance}%</span>
                 </div>
             )
         },
@@ -112,13 +114,14 @@ const StudentDirectory = () => {
             label: 'Fee Status',
             sortable: true,
             render: (student) => {
-                const statusColors = {
-                    Paid: 'bg-green-50 text-[#3AC47D]',
-                    Pending: 'bg-orange-50 text-orange-500',
-                    Overdue: 'bg-red-50 text-red-500'
-                };
+                const statusClass = {
+                    Paid: 'badge-success',
+                    Pending: 'badge-warning',
+                    Overdue: 'badge-danger'
+                }[student.feeStatus] || 'badge-neutral';
+
                 return (
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[student.feeStatus] || 'bg-gray-100 text-gray-600'}`}>
+                    <span className={`badge ${statusClass}`}>
                         {student.feeStatus}
                     </span>
                 );
@@ -129,9 +132,9 @@ const StudentDirectory = () => {
             label: 'Performance',
             sortable: true,
             render: (student) => (
-                <div className="flex gap-0.5">
+                <div style={{ display: 'flex', gap: '2px' }}>
                     {[...Array(5)].map((_, i) => (
-                        <span key={i} className={`text-sm ${i < student.performance ? 'text-yellow-400' : 'text-gray-200'}`}>
+                        <span key={i} style={{ fontSize: '0.9rem', color: i < student.performance ? '#facc15' : '#e2e8f0' }}>
                             ★
                         </span>
                     ))}
@@ -165,35 +168,35 @@ const StudentDirectory = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 font-sans">
-            <div className="max-w-7xl mx-auto space-y-6">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-800">Student Directory</h1>
-                        <p className="text-sm text-slate-500 mt-1">
-                            {filteredStudents.length} student{filteredStudents.length !== 1 ? 's' : ''} found
-                        </p>
-                    </div>
-                    <div className="flex gap-3">
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                            <Download size={18} />
-                            Export
-                        </button>
-                        <button
-                            onClick={() => setIsAddModalOpen(true)}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#2A6EF2] text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm"
-                        >
-                            <Plus size={18} />
-                            Add Student
-                        </button>
-                    </div>
+        <div className="student-directory-container">
+            {/* Header */}
+            <div className="directory-header">
+                <div className="header-content">
+                    <h1>Student Directory</h1>
+                    <p>
+                        {filteredStudents.length} student{filteredStudents.length !== 1 ? 's' : ''} found
+                    </p>
                 </div>
+                <div className="header-actions">
+                    <button className="btn-secondary">
+                        <Download size={18} />
+                        Export
+                    </button>
+                    <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="btn-primary"
+                    >
+                        <Plus size={18} />
+                        Add Student
+                    </button>
+                </div>
+            </div>
 
-                {/* Controls & Content */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="p-4 border-b border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-center bg-white">
-                        <div className="w-full md:w-96">
+            {/* Controls & Content */}
+            <div className="directory-card">
+                <div className="controls-section" style={{ border: 'none', boxShadow: 'none', paddingBottom: '0' }}>
+                    <div className="search-filter-row">
+                        <div className="search-wrapper">
                             <SearchBar
                                 placeholder="Search by name, parent, or admission number..."
                                 onSearch={setSearchTerm}
@@ -205,21 +208,25 @@ const StudentDirectory = () => {
                             onFilterChange={setActiveFilters}
                         />
                     </div>
+                </div>
 
-                    {/* Bulk Actions Bar */}
-                    {selectedStudents.length > 0 && (
-                        <div className="bg-blue-50 px-6 py-3 flex items-center justify-between border-b border-blue-100 animate-in slide-in-from-top-2">
-                            <span className="text-sm font-medium text-blue-800">{selectedStudents.length} selected</span>
-                            <div className="flex gap-2">
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Send Message</button>
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Update Class</button>
-                                <button className="px-3 py-1.5 bg-white text-slate-700 border border-blue-200 rounded text-xs font-medium hover:bg-blue-50">Print IDs</button>
-                                <button className="px-3 py-1.5 bg-white text-red-600 border border-red-200 rounded text-xs font-medium hover:bg-red-50">Delete</button>
+                {/* Bulk Actions Bar */}
+                {selectedStudents.length > 0 && (
+                    <div style={{ padding: '0 20px' }}>
+                        <div className="bulk-actions-bar">
+                            <span className="selected-count">{selectedStudents.length} selected</span>
+                            <div className="action-buttons">
+                                <button className="btn-action-sm">Send Message</button>
+                                <button className="btn-action-sm">Update Class</button>
+                                <button className="btn-action-sm">Print IDs</button>
+                                <button className="btn-danger-sm">Delete</button>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Data Table */}
+                {/* Data Table */}
+                <div style={{ padding: '20px' }}>
                     <DataTable
                         columns={columns}
                         data={filteredStudents}
