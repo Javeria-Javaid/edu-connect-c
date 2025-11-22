@@ -56,17 +56,14 @@
 
 /* === CONTROLS SECTION === */
 .controls-section {
-    background: white;
+    background: transparent;
     padding: 20px;
-    border-radius: 16px;
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    animation: fadeInUp 0.6s ease-out;
-    animation-delay: 0.1s;
-    animation-fill-mode: both;
 }
 
 @keyframes fadeInUp {
