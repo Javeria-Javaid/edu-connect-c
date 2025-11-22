@@ -4,6 +4,7 @@ import FilterPanel from '../shared/FilterPanel';
 import { reportsOverviewData } from './mockData';
 import { FileText, Download, Eye, Users, TrendingUp, AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import './ReportSubSection.css';
 
 const StudentReports = () => {
     const [filters, setFilters] = useState({});
@@ -11,9 +12,9 @@ const StudentReports = () => {
 
     // Mock Summary Data
     const summaryStats = [
-        { label: 'Total Students', value: '2,543', change: '+12%', icon: Users, color: 'blue' },
-        { label: 'Avg. Performance', value: 'Good', change: 'Stable', icon: TrendingUp, color: 'green' },
-        { label: 'At Risk', value: '45', change: '-2%', icon: AlertCircle, color: 'red' },
+        { label: 'Total Students', value: '2,543', change: '+12%', icon: Users, bgColor: '#dbeafe' },
+        { label: 'Avg. Performance', value: 'Good', change: 'Stable', icon: TrendingUp, bgColor: '#dcfce7' },
+        { label: 'At Risk', value: '45', change: '-2%', icon: AlertCircle, bgColor: '#fee2e2' },
     ];
 
     const performanceData = [
@@ -51,11 +52,11 @@ const StudentReports = () => {
     const columns = [
         {
             key: 'name', label: 'Student Name', sortable: true, render: (row) => (
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="student-avatar">
                         {row.name.split(' ').map(n => n[0]).join('')}
                     </div>
-                    <span className="font-medium text-gray-900">{row.name}</span>
+                    <span style={{ fontWeight: '600', color: '#1e293b' }}>{row.name}</span>
                 </div>
             )
         },
@@ -65,10 +66,10 @@ const StudentReports = () => {
             label: 'Performance',
             sortable: true,
             render: (row) => (
-                <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${row.performance === 'Excellent' ? 'bg-green-50 text-green-700 border-green-200' :
-                        row.performance === 'Good' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                            row.performance === 'Average' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
-                                'bg-red-50 text-red-700 border-red-200'
+                <span className={`status-badge ${row.performance === 'Excellent' ? 'status-excellent' :
+                        row.performance === 'Good' ? 'status-good' :
+                            row.performance === 'Average' ? 'status-average' :
+                                'status-poor'
                     }`}>
                     {row.performance}
                 </span>
@@ -76,14 +77,14 @@ const StudentReports = () => {
         },
         {
             key: 'attendance', label: 'Attendance', sortable: true, render: (row) => (
-                <div className="flex items-center gap-2">
-                    <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="progress-bar-container">
                         <div
-                            className="h-full bg-blue-500 rounded-full"
-                            style={{ width: row.attendance }}
+                            className="progress-bar-fill"
+                            style={{ width: row.attendance, background: '#3b82f6' }}
                         />
                     </div>
-                    <span className="text-xs text-gray-600">{row.attendance}</span>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{row.attendance}</span>
                 </div>
             )
         },
@@ -97,105 +98,100 @@ const StudentReports = () => {
     ];
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Header & Actions */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 className="text-xl font-bold text-gray-900">Student Reports</h2>
-                    <p className="text-sm text-gray-500">Comprehensive academic and behavioral records</p>
-                </div>
-                <div className="flex gap-3">
-                    <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
-                        <Download className="w-4 h-4 mr-2" />
-                        Export All
-                    </button>
-                </div>
+        <div className="report-subsection-container">
+            {/* Header */}
+            <div className="report-section-header">
+                <h2 className="report-section-title">Student Reports</h2>
+                <p className="report-section-subtitle">Comprehensive academic and behavioral records</p>
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="report-summary-grid">
                 {summaryStats.map((stat, index) => {
                     const Icon = stat.icon;
                     return (
-                        <div key={index} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                                    <h3 className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</h3>
+                        <div key={index} className="report-summary-card">
+                            <div className="report-summary-header">
+                                <div className="report-summary-content">
+                                    <h3>{stat.label}</h3>
+                                    <p className="report-summary-value">{stat.value}</p>
                                 </div>
-                                <div className={`p-2 rounded-xl bg-${stat.color}-50 text-${stat.color}-600`}>
-                                    <Icon className="w-5 h-5" />
+                                <div className="report-summary-icon" style={{ backgroundColor: stat.bgColor, color: '#3b82f6' }}>
+                                    <Icon size={24} />
                                 </div>
                             </div>
-                            <div className="mt-2 flex items-center text-sm">
-                                <span className={stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}>
+                            <div className="report-summary-footer">
+                                <span style={{ color: stat.change.startsWith('+') ? '#10b981' : '#ef4444' }}>
                                     {stat.change}
                                 </span>
-                                <span className="text-gray-400 ml-1">vs last term</span>
+                                <span style={{ color: '#94a3b8' }}>vs last term</span>
                             </div>
                         </div>
                     );
                 })}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="report-content-grid">
                 {/* Filters & Table */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div className="mb-6">
-                            <FilterPanel
-                                filters={filterOptions}
-                                onFilterChange={setFilters}
-                            />
-                        </div>
-                        <DataTable
-                            columns={columns}
-                            data={studentReports}
-                            selectable={true}
-                            onQuickAction={handleQuickAction}
-                            pageSize={8}
+                <div className="report-table-section">
+                    <div className="report-table-header">
+                        <h3 className="report-table-title">Student Records</h3>
+                        <button className="report-export-btn">
+                            <Download size={16} />
+                            Export All
+                        </button>
+                    </div>
+                    <div className="report-filter-section">
+                        <FilterPanel
+                            filters={filterOptions}
+                            onFilterChange={setFilters}
                         />
                     </div>
+                    <DataTable
+                        columns={columns}
+                        data={studentReports}
+                        selectable={true}
+                        onQuickAction={handleQuickAction}
+                        pageSize={8}
+                    />
                 </div>
 
                 {/* Charts Side Panel */}
-                <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold text-gray-900 mb-6">Performance Distribution</h3>
-                        <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={performanceData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {performanceData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                                    />
-                                    <Legend verticalAlign="bottom" height={36} />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                        <div className="mt-4 space-y-3">
-                            {performanceData.map((item) => (
-                                <div key={item.name} className="flex items-center justify-between text-sm">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                                        <span className="text-gray-600">{item.name}</span>
-                                    </div>
-                                    <span className="font-medium text-gray-900">{item.value}%</span>
+                <div className="report-chart-card">
+                    <h3 className="report-chart-title">Performance Distribution</h3>
+                    <div className="report-chart-container">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={performanceData}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                >
+                                    {performanceData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                />
+                                <Legend verticalAlign="bottom" height={36} />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {performanceData.map((item) => (
+                            <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: item.color }} />
+                                    <span style={{ color: '#64748b' }}>{item.name}</span>
                                 </div>
-                            ))}
-                        </div>
+                                <span style={{ fontWeight: '600', color: '#1e293b' }}>{item.value}%</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
