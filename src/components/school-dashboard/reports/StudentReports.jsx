@@ -67,9 +67,9 @@ const StudentReports = () => {
             sortable: true,
             render: (row) => (
                 <span className={`status-badge ${row.performance === 'Excellent' ? 'status-excellent' :
-                        row.performance === 'Good' ? 'status-good' :
-                            row.performance === 'Average' ? 'status-average' :
-                                'status-poor'
+                    row.performance === 'Good' ? 'status-good' :
+                        row.performance === 'Average' ? 'status-average' :
+                            'status-poor'
                     }`}>
                     {row.performance}
                 </span>
@@ -159,15 +159,15 @@ const StudentReports = () => {
                 {/* Charts Side Panel */}
                 <div className="report-chart-card">
                     <h3 className="report-chart-title">Performance Distribution</h3>
-                    <div className="report-chart-container">
+                    <div style={{ height: '350px', marginBottom: '20px' }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={performanceData}
                                     cx="50%"
-                                    cy="50%"
-                                    innerRadius={60}
-                                    outerRadius={80}
+                                    cy="45%"
+                                    innerRadius={70}
+                                    outerRadius={110}
                                     paddingAngle={5}
                                     dataKey="value"
                                 >
@@ -178,18 +178,37 @@ const StudentReports = () => {
                                 <Tooltip
                                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                                 />
-                                <Legend verticalAlign="bottom" height={36} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={50}
+                                    iconType="circle"
+                                    formatter={(value, entry) => (
+                                        <span style={{ color: '#475569', fontSize: '0.875rem', fontWeight: '500' }}>
+                                            {value}
+                                        </span>
+                                    )}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
-                    <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{
+                        marginTop: '20px',
+                        paddingTop: '20px',
+                        borderTop: '1px solid #f1f5f9',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px'
+                    }}>
+                        <h4 style={{ fontSize: '0.9rem', fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
+                            Breakdown
+                        </h4>
                         {performanceData.map((item) => (
-                            <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: item.color }} />
-                                    <span style={{ color: '#64748b' }}>{item.name}</span>
+                            <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '8px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <div style={{ width: '14px', height: '14px', borderRadius: '50%', backgroundColor: item.color, boxShadow: `0 2px 8px ${item.color}40` }} />
+                                    <span style={{ color: '#475569', fontSize: '0.875rem', fontWeight: '500' }}>{item.name}</span>
                                 </div>
-                                <span style={{ fontWeight: '600', color: '#1e293b' }}>{item.value}%</span>
+                                <span style={{ fontWeight: '700', color: '#1e293b', fontSize: '0.95rem' }}>{item.value}%</span>
                             </div>
                         ))}
                     </div>
