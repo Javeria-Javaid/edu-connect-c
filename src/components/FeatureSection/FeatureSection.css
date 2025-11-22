@@ -1,7 +1,8 @@
 /* --- FEATURES SECTION CONTAINER --- */
 .features-section {
     padding: 100px 20px;
-    background-color: #ffffff; /* Clean white background */
+    background-color: #ffffff;
+    /* Clean white background */
     color: #1e293b;
     display: flex;
     justify-content: center;
@@ -11,14 +12,16 @@
     max-width: 1200px;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1.5fr; /* Header on left, wider grid on right */
+    grid-template-columns: 1fr 1.5fr;
+    /* Header on left, wider grid on right */
     gap: 80px;
     align-items: start;
 }
 
 /* --- LEFT COLUMN: HEADER --- */
 .features-header-content {
-    padding-top: 20px; /* Align top with the first grid items */
+    padding-top: 20px;
+    /* Align top with the first grid items */
 }
 
 .section-subheading {
@@ -26,7 +29,8 @@
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #66a1be; /* Primary color */
+    color: #66a1be;
+    /* Primary color */
     margin-bottom: 10px;
 }
 
@@ -39,7 +43,8 @@
 }
 
 .highlight-text {
-    color: #66a1be; /* Primary color highlight */
+    color: #66a1be;
+    /* Primary color highlight */
     font-style: italic;
 }
 
@@ -82,21 +87,6 @@
 
 .feature-card {
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-    height: auto;
-}
-
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-}
-
-.icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.6);
     display: flex;
     justify-content: center;
@@ -106,7 +96,8 @@
 }
 
 .feature-icon {
-    color: #1e293b; /* Dark icon color */
+    color: #1e293b;
+    /* Dark icon color */
 }
 
 .card-title {
@@ -168,7 +159,8 @@
     }
 
     .features-grid {
-        grid-template-columns: 1fr; /* Stack cards vertically on phones */
+        grid-template-columns: 1fr;
+        /* Stack cards vertically on phones */
     }
 
     .feature-card {
