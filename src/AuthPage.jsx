@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import './AuthPage.css';
 import { FaGoogle, FaGithub, FaSignInAlt, FaUserPlus, FaEye, FaEyeSlash, FaArrowLeft } from 'react-icons/fa';
 import { useAuth } from './context/AuthContext.jsx';
+
 // --- MOCK CREDENTIALS FOR DEVELOPMENT ---
 const ADMIN_EMAIL = 'admin@educonnect.com';
 const ADMIN_PASSWORD = 'password123';
@@ -30,8 +31,8 @@ const AuthPage = ({ defaultView = 'login' }) => {
         setLoginError('');
     };
 
-    const handleLogin = (credentials) => {
-        // API INTEGRATION PLACEHOLDER:
+    const handleLoginSubmit = (e) => {
+        e.preventDefault();
         setLoginError('');
 
         // Trim whitespace from inputs
@@ -48,11 +49,11 @@ const AuthPage = ({ defaultView = 'login' }) => {
             role: role
         });
 
-        // Allow any login for development if it matches admin credentials OR if we just want to test roles
-        // For now, let's keep the admin check but allow it to proceed with the selected role
+        // Allow any login for development if it matches admin credentials
         if (trimmedEmail === ADMIN_EMAIL && trimmedPassword === ADMIN_PASSWORD) {
             console.log("Login Successful! Redirecting to Dashboard...");
-            handleLogin({ email: trimmedEmail, password: trimmedPassword });
+            // Call the login function from AuthContext with the selected role
+            login({ email: trimmedEmail, password: trimmedPassword, role: role });
         } else {
             setLoginError('Invalid email or password.');
         }
