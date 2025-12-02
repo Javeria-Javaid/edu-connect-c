@@ -3,7 +3,6 @@ import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import './AuthPage.css';
 import { FaGoogle, FaGithub, FaSignInAlt, FaUserPlus, FaEye, FaEyeSlash, FaArrowLeft } from 'react-icons/fa';
 import { useAuth } from './context/AuthContext.jsx';
-
 // --- MOCK CREDENTIALS FOR DEVELOPMENT ---
 const ADMIN_EMAIL = 'admin@educonnect.com';
 const ADMIN_PASSWORD = 'password123';
@@ -21,23 +20,6 @@ const AuthPage = ({ defaultView = 'login' }) => {
     const [currentStep] = useState(1);
     const [role, setRole] = useState('admin'); // Default role
 
-    // Redirect if already authenticated - prevents authenticated users from accessing login page
-    useEffect(() => {
-        if (isAuthenticated) {
-            const from = location.state?.from?.pathname;
-            if (from) {
-                navigate(from, { replace: true });
-            } else {
-                // Redirect based on the authenticated user's role
-                if (userRole === 'school_admin') {
-                    navigate('/school/dashboard', { replace: true });
-                } else {
-                    navigate('/dashboard', { replace: true });
-                }
-            }
-        }
-    }, [isAuthenticated, navigate, location.state, userRole]);
-
     useEffect(() => {
         setIsLoginView(defaultView !== 'signup');
         setLoginError('');
@@ -50,27 +32,6 @@ const AuthPage = ({ defaultView = 'login' }) => {
 
     const handleLogin = (credentials) => {
         // API INTEGRATION PLACEHOLDER:
-        // Replace this with actual API call to backend
-        // e.g., axios.post('/api/auth/login', { email, password, role })
-
-        // Authenticate user (mock)
-        login({ email: credentials.email, role: role }); // Use selected role
-
-        // Redirect to intended destination or default based on role
-        const from = location.state?.from?.pathname;
-        if (from) {
-            navigate(from, { replace: true });
-        } else {
-            if (role === 'school_admin') {
-                navigate('/school/dashboard', { replace: true });
-            } else {
-                navigate('/dashboard', { replace: true });
-            }
-        }
-    };
-
-    const handleLoginSubmit = (e) => {
-        e.preventDefault();
         setLoginError('');
 
         // Trim whitespace from inputs
@@ -313,6 +274,9 @@ const AuthPage = ({ defaultView = 'login' }) => {
         // Otherwise, redirect based on role
         if (userRole === 'school_admin') {
             return <Navigate to="/school/dashboard" replace />;
+        }
+        if (userRole === 'teacher') {
+            return <Navigate to="/teacher/dashboard" replace />;
         }
         return <Navigate to="/dashboard" replace />;
     }

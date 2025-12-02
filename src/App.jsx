@@ -32,6 +32,19 @@ import SchoolTransportView from './components/school-dashboard/SchoolTransportVi
 import SchoolReportsView from './components/school-dashboard/SchoolReportsView.jsx';
 import SchoolSettingsView from './components/school-dashboard/SchoolSettingsView.jsx';
 
+// Teacher Dashboard Imports
+import TeacherDashboardLayout from './dashboard/TeacherDashboardLayout.jsx';
+import TeacherDashboardOverview from './components/teacher-dashboard/TeacherDashboardOverview.jsx';
+import TeacherClassesView from './components/teacher-dashboard/TeacherClassesView.jsx';
+import TeacherAttendanceView from './components/teacher-dashboard/TeacherAttendanceView.jsx';
+import TeacherHomeworkView from './components/teacher-dashboard/TeacherHomeworkView.jsx';
+import TeacherExamsView from './components/teacher-dashboard/TeacherExamsView.jsx';
+import TeacherStudentsView from './components/teacher-dashboard/TeacherStudentsView.jsx';
+import TeacherCommunicationView from './components/teacher-dashboard/TeacherCommunicationView.jsx';
+import TeacherResourcesView from './components/teacher-dashboard/TeacherResourcesView.jsx';
+import TeacherReportsView from './components/teacher-dashboard/TeacherReportsView.jsx';
+import TeacherSettingsView from './components/teacher-dashboard/TeacherSettingsView.jsx';
+
 // Import your existing landing page components
 import CardNav from './components/CardNav/CardNav';
 import Hero from './components/Hero/Hero';
@@ -219,6 +232,25 @@ function App() {
                             <Route path="transport" element={<SchoolTransportView />} />
                             <Route path="reports" element={<SchoolReportsView />} />
                             <Route path="settings" element={<SchoolSettingsView />} />
+                        </Route>
+                    </Route>
+
+                    {/* Protected Teacher Routes */}
+                    <Route
+                        path="/teacher/dashboard"
+                        element={<ProtectedRoute allowedRoles={['teacher']} />}
+                    >
+                        <Route element={<TeacherDashboardLayout />}>
+                            <Route index element={<TeacherDashboardOverview />} />
+                            <Route path="classes" element={<TeacherClassesView />} />
+                            <Route path="attendance" element={<TeacherAttendanceView />} />
+                            <Route path="homework" element={<TeacherHomeworkView />} />
+                            <Route path="exams" element={<TeacherExamsView />} />
+                            <Route path="students" element={<TeacherStudentsView />} />
+                            <Route path="communication" element={<TeacherCommunicationView />} />
+                            <Route path="resources" element={<TeacherResourcesView />} />
+                            <Route path="reports" element={<TeacherReportsView />} />
+                            <Route path="settings" element={<TeacherSettingsView />} />
                         </Route>
                     </Route>
 
