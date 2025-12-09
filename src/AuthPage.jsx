@@ -5,8 +5,13 @@ import { FaGoogle, FaGithub, FaSignInAlt, FaUserPlus, FaEye, FaEyeSlash, FaArrow
 import { useAuth } from './context/AuthContext.jsx';
 
 // --- MOCK CREDENTIALS FOR DEVELOPMENT ---
-const ADMIN_EMAIL = 'admin@educonnect.com';
-const ADMIN_PASSWORD = 'password123';
+const CREDENTIALS = {
+    'admin@educonnect.com': { password: 'password123', role: 'admin' },
+    'school@educonnect.com': { password: 'password123', role: 'school_admin' },
+    'teacher@educonnect.com': { password: '123456', role: 'teacher' },
+    'parent@educonnect.com': { password: '123456', role: 'parent' },
+    'vendor@educonnect.com': { password: '123456', role: 'vendor' }
+};
 // ----------------------------------------
 
 const AuthPage = ({ defaultView = 'login' }) => {
@@ -39,21 +44,41 @@ const AuthPage = ({ defaultView = 'login' }) => {
         const trimmedEmail = email.trim();
         const trimmedPassword = password.trim();
 
-        // Debug logging (remove in production)
-        console.log('Login attempt:', {
-            enteredEmail: trimmedEmail,
-            expectedEmail: ADMIN_EMAIL,
-            emailMatch: trimmedEmail === ADMIN_EMAIL,
-            enteredPassword: trimmedPassword ? '***' : '(empty)',
-            passwordMatch: trimmedPassword === ADMIN_PASSWORD,
-            role: role
-        });
-
-        // Allow any login for development if it matches admin credentials
-        if (trimmedEmail === ADMIN_EMAIL && trimmedPassword === ADMIN_PASSWORD) {
-            console.log("Login Successful! Redirecting to Dashboard...");
-            // Call the login function from AuthContext with the selected role
-            login({ email: trimmedEmail, password: trimmedPassword, role: role });
+        // Check if credentials exist
+        const userCreds = CREDENTIALS[trimmedEmail];
+        
+        if (userCreds && trimmedPassword === userCreds.password) {
+            // Use role from credentials (not from dropdown) for security
+            const userRole = userCreds.role;
+            console.log("Login Successful! Redirecting to Dashboard...", { email: trimmedEmail, role: userRole });
+            login({ email: trimmedEmail, role: userRole });
+            
+            // Redirect based on role
+            const from = location.state?.from?.pathname;
+            if (from) {
+                navigate(from, { replace: true });
+            } else {
+                // Redirect to role-specific dashboard
+                switch (userRole) {
+                    case 'admin':
+                        navigate('/dashboard', { replace: true });
+                        break;
+                    case 'school_admin':
+                        navigate('/school/dashboard', { replace: true });
+                        break;
+                    case 'teacher':
+                        navigate('/teacher/dashboard', { replace: true });
+                        break;
+                    case 'parent':
+                        navigate('/parent/dashboard', { replace: true });
+                        break;
+                    case 'vendor':
+                        navigate('/vendor/dashboard', { replace: true });
+                        break;
+                    default:
+                        navigate('/dashboard', { replace: true });
+                }
+            }
         } else {
             setLoginError('Invalid email or password.');
         }
@@ -265,7 +290,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
         }
     };
 
-    // If already authenticated, redirect to '/dashboard' (fallback for useEffect)
+    // If already authenticated, redirect to role-specific dashboard
     if (isAuthenticated) {
         const from = location.state?.from?.pathname;
         // If we have a specific destination, go there
@@ -273,13 +298,20 @@ const AuthPage = ({ defaultView = 'login' }) => {
             return <Navigate to={from} replace />;
         }
         // Otherwise, redirect based on role
-        if (userRole === 'school_admin') {
-            return <Navigate to="/school/dashboard" replace />;
+        switch (userRole) {
+            case 'admin':
+                return <Navigate to="/dashboard" replace />;
+            case 'school_admin':
+                return <Navigate to="/school/dashboard" replace />;
+            case 'teacher':
+                return <Navigate to="/teacher/dashboard" replace />;
+            case 'parent':
+                return <Navigate to="/parent/dashboard" replace />;
+            case 'vendor':
+                return <Navigate to="/vendor/dashboard" replace />;
+            default:
+                return <Navigate to="/dashboard" replace />;
         }
-        if (userRole === 'teacher') {
-            return <Navigate to="/teacher/dashboard" replace />;
-        }
-        return <Navigate to="/dashboard" replace />;
     }
 
     return (

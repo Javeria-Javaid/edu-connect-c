@@ -45,6 +45,29 @@ import TeacherResourcesView from './components/teacher-dashboard/TeacherResource
 import TeacherReportsView from './components/teacher-dashboard/TeacherReportsView.jsx';
 import TeacherSettingsView from './components/teacher-dashboard/TeacherSettingsView.jsx';
 
+// Parent Dashboard Imports
+import ParentDashboardLayout from './dashboard/ParentDashboardLayout.jsx';
+import ParentDashboardOverview from './components/parent-dashboard/ParentDashboardOverview.jsx';
+import ParentAcademicView from './components/parent-dashboard/ParentAcademicView.jsx';
+import ParentAttendanceView from './components/parent-dashboard/ParentAttendanceView.jsx';
+import ParentHomeworkView from './components/parent-dashboard/ParentHomeworkView.jsx';
+import ParentExamsView from './components/parent-dashboard/ParentExamsView.jsx';
+import ParentFeesView from './components/parent-dashboard/ParentFeesView.jsx';
+import ParentTransportView from './components/parent-dashboard/ParentTransportView.jsx';
+import ParentCommunicationView from './components/parent-dashboard/ParentCommunicationView.jsx';
+import ParentSettingsView from './components/parent-dashboard/ParentSettingsView.jsx';
+
+// Vendor Dashboard Imports
+import VendorDashboardLayout from './dashboard/VendorDashboardLayout.jsx';
+import VendorDashboardOverview from './components/vendor-dashboard/VendorDashboardOverview.jsx';
+import VendorProfileView from './components/vendor-dashboard/VendorProfileView.jsx';
+import VendorOrdersView from './components/vendor-dashboard/VendorOrdersView.jsx';
+import VendorInventoryView from './components/vendor-dashboard/VendorInventoryView.jsx';
+import VendorBillingView from './components/vendor-dashboard/VendorBillingView.jsx';
+import VendorCommunicationView from './components/vendor-dashboard/VendorCommunicationView.jsx';
+import VendorReportsView from './components/vendor-dashboard/VendorReportsView.jsx';
+import VendorSettingsView from './components/vendor-dashboard/VendorSettingsView.jsx';
+
 // Import your existing landing page components
 import CardNav from './components/CardNav/CardNav';
 import Hero from './components/Hero/Hero';
@@ -251,6 +274,41 @@ function App() {
                             <Route path="resources" element={<TeacherResourcesView />} />
                             <Route path="reports" element={<TeacherReportsView />} />
                             <Route path="settings" element={<TeacherSettingsView />} />
+                        </Route>
+                    </Route>
+
+                    {/* Protected Parent Routes */}
+                    <Route
+                        path="/parent/dashboard"
+                        element={<ProtectedRoute allowedRoles={['parent']} />}
+                    >
+                        <Route element={<ParentDashboardLayout />}>
+                            <Route index element={<ParentDashboardOverview />} />
+                            <Route path="academic" element={<ParentAcademicView />} />
+                            <Route path="attendance" element={<ParentAttendanceView />} />
+                            <Route path="homework" element={<ParentHomeworkView />} />
+                            <Route path="exams" element={<ParentExamsView />} />
+                            <Route path="fees" element={<ParentFeesView />} />
+                            <Route path="transport" element={<ParentTransportView />} />
+                            <Route path="communication" element={<ParentCommunicationView />} />
+                            <Route path="settings" element={<ParentSettingsView />} />
+                        </Route>
+                    </Route>
+
+                    {/* Protected Vendor Routes */}
+                    <Route
+                        path="/vendor/dashboard"
+                        element={<ProtectedRoute allowedRoles={['vendor']} />}
+                    >
+                        <Route element={<VendorDashboardLayout />}>
+                            <Route index element={<VendorDashboardOverview />} />
+                            <Route path="profile" element={<VendorProfileView />} />
+                            <Route path="orders" element={<VendorOrdersView />} />
+                            <Route path="inventory" element={<VendorInventoryView />} />
+                            <Route path="billing" element={<VendorBillingView />} />
+                            <Route path="communication" element={<VendorCommunicationView />} />
+                            <Route path="reports" element={<VendorReportsView />} />
+                            <Route path="settings" element={<VendorSettingsView />} />
                         </Route>
                     </Route>
 

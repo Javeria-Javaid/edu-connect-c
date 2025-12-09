@@ -1,132 +1,134 @@
 import React from 'react';
 import {
     BookOpen,
+    Users,
     ClipboardCheck,
-    Clock,
-    AlertCircle,
+    Book,
+    FileSpreadsheet,
     Megaphone,
     Calendar,
-    Plus
+    TrendingUp,
+    Clock,
+    AlertCircle,
+    CheckCircle
 } from 'lucide-react';
+import './TeacherDashboardOverview.css';
 
 const TeacherDashboardOverview = () => {
-    // Mock Data
+    // KPI Data
+    const kpiData = [
+        { title: 'Total Assigned Classes', value: '5', change: 'Active Classes', icon: BookOpen, color: '#3b82f6' },
+        { title: 'Total Students', value: '142', change: 'Across all classes', icon: Users, color: '#10b981' },
+        { title: "Today's Attendance Pending", value: '2', change: 'Classes remaining', icon: ClipboardCheck, color: '#f59e0b' },
+        { title: 'Homework Due Today', value: '3', change: 'Assignments to grade', icon: Book, color: '#8b5cf6' },
+        { title: 'Upcoming Exams', value: '2', change: 'Next week', icon: FileSpreadsheet, color: '#ef4444' },
+    ];
+
+    // Today's Classes
     const todaysClasses = [
-        { id: 1, subject: 'Mathematics', class: 'Class 10-A', time: '09:00 AM - 10:00 AM', room: 'Room 101' },
-        { id: 2, subject: 'Physics', class: 'Class 9-B', time: '10:15 AM - 11:15 AM', room: 'Lab 2' },
-        { id: 3, subject: 'Mathematics', class: 'Class 10-B', time: '11:30 AM - 12:30 PM', room: 'Room 102' },
+        { id: 1, subject: 'Mathematics', class: 'Class 10-A', time: '09:00 AM - 10:00 AM', room: 'Room 101', students: 28 },
+        { id: 2, subject: 'Physics', class: 'Class 9-B', time: '10:15 AM - 11:15 AM', room: 'Lab 2', students: 30 },
+        { id: 3, subject: 'Mathematics', class: 'Class 10-B', time: '11:30 AM - 12:30 PM', room: 'Room 102', students: 29 },
     ];
 
+    // Pending Tasks
     const pendingTasks = [
-        { id: 1, title: 'Grade Math Quiz', due: 'Today', type: 'grading' },
-        { id: 2, title: 'Upload Physics Notes', due: 'Tomorrow', type: 'upload' },
-        { id: 3, title: 'Mark Attendance (10-B)', due: 'Today', type: 'attendance' },
+        { id: 1, title: 'Grade Math Quiz (10-A)', due: 'Today', type: 'grading', priority: 'high' },
+        { id: 2, title: 'Upload Physics Notes (9-B)', due: 'Tomorrow', type: 'upload', priority: 'medium' },
+        { id: 3, title: 'Mark Attendance (10-B)', due: 'Today', type: 'attendance', priority: 'high' },
     ];
 
+    // Announcements
     const announcements = [
         { id: 1, title: 'Staff Meeting', date: 'Dec 5, 2025', content: 'Monthly staff meeting at 2:00 PM in the conference room.' },
         { id: 2, title: 'Winter Break', date: 'Dec 20, 2025', content: 'School will remain closed for winter break from Dec 24.' },
     ];
 
-    return (
-        <div className="p-6 space-y-6">
-            <header className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-800">Welcome back, Teacher!</h1>
-                <p className="text-gray-600">Here's what's happening today.</p>
-            </header>
+    // Student Performance Data (for chart)
+    const performanceData = [
+        { name: 'Week 1', score: 75 },
+        { name: 'Week 2', score: 82 },
+        { name: 'Week 3', score: 78 },
+        { name: 'Week 4', score: 88 },
+        { name: 'Week 5', score: 85 },
+    ];
 
-            {/* Quick Stats / Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer hover:shadow-md transition-shadow">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
-                        <ClipboardCheck size={24} />
-                    </div>
-                    <div>
-                        <p className="text-sm text-gray-500">Quick Action</p>
-                        <p className="font-semibold text-gray-800">Take Attendance</p>
-                    </div>
+    // Attendance Data (for donut chart)
+    const attendanceData = {
+        present: 135,
+        absent: 7,
+        late: 3,
+        total: 145
+    };
+
+    return (
+        <div className="teacher-dashboard-overview">
+            <div className="overview-header">
+                <div>
+                    <h1 className="page-title">Teacher Dashboard</h1>
+                    <p className="page-subtitle">Welcome back! Here's what's happening today.</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer hover:shadow-md transition-shadow">
-                    <div className="p-3 bg-green-50 text-green-600 rounded-lg">
-                        <Plus size={24} />
-                    </div>
-                    <div>
-                        <p className="text-sm text-gray-500">Quick Action</p>
-                        <p className="font-semibold text-gray-800">Upload Homework</p>
-                    </div>
-                </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 cursor-pointer hover:shadow-md transition-shadow">
-                    <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
-                        <Plus size={24} />
-                    </div>
-                    <div>
-                        <p className="text-sm text-gray-500">Quick Action</p>
-                        <p className="font-semibold text-gray-800">Add Grades</p>
-                    </div>
-                </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-                    <div className="p-3 bg-orange-50 text-orange-600 rounded-lg">
-                        <Clock size={24} />
-                    </div>
-                    <div>
-                        <p className="text-sm text-gray-500">Next Class</p>
-                        <p className="font-semibold text-gray-800">11:30 AM (10-B)</p>
-                    </div>
+                <div className="date-display">
+                    {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Today's Classes */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="p-5 border-b border-gray-100 flex justify-between items-center">
-                            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                                <BookOpen size={20} className="text-blue-500" />
-                                Today's Classes
-                            </h2>
-                            <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
+            {/* KPI Cards */}
+            <div className="kpi-grid">
+                {kpiData.map((kpi, index) => (
+                    <div key={index} className="kpi-card">
+                        <div className="kpi-icon-wrapper" style={{ backgroundColor: `${kpi.color}20`, color: kpi.color }}>
+                            <kpi.icon size={24} />
                         </div>
-                        <div className="p-5">
-                            <div className="space-y-4">
-                                {todaysClasses.map((cls) => (
-                                    <div key={cls.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 font-bold shadow-sm">
-                                                {cls.class.split(' ')[1]}
-                                            </div>
-                                            <div>
-                                                <h3 className="font-semibold text-gray-800">{cls.subject}</h3>
-                                                <p className="text-sm text-gray-500">{cls.class} • {cls.room}</p>
-                                            </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                                                {cls.time}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                        <div className="kpi-content">
+                            <h3 className="kpi-title">{kpi.title}</h3>
+                            <div className="kpi-value">{kpi.value}</div>
+                            <div className="kpi-change">{kpi.change}</div>
                         </div>
                     </div>
+                ))}
+            </div>
 
-                    {/* Pending Tasks */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="p-5 border-b border-gray-100">
-                            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                                <AlertCircle size={20} className="text-orange-500" />
-                                Pending Tasks
-                            </h2>
+            {/* Main Content Grid */}
+            <div className="dashboard-grid">
+                {/* Today's Schedule Timeline */}
+                <div className="dashboard-card">
+                    <div className="card-header">
+                        <h2 className="card-title">Today's Schedule</h2>
+                        <Calendar size={20} className="text-gray-400" />
+                    </div>
+                    <div className="card-body">
+                        <div className="schedule-timeline">
+                            {todaysClasses.map((cls) => (
+                                <div key={cls.id} className="schedule-item">
+                                    <div className="schedule-time-badge">
+                                        <span className="time-start">{cls.time.split(' - ')[0]}</span>
+                                        <span className="time-end">{cls.time.split(' - ')[1]}</span>
+                                    </div>
+                                    <div className="schedule-details">
+                                        <h4>{cls.subject}</h4>
+                                        <p>{cls.class} • {cls.room}</p>
+                                        <span className="schedule-students">{cls.students} students</span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="p-5">
-                            <div className="space-y-3">
-                                {pendingTasks.map((task) => (
-                                    <div key={task.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-2 h-2 rounded-full ${task.type === 'grading' ? 'bg-red-500' : task.type === 'upload' ? 'bg-blue-500' : 'bg-green-500'}`} />
-                                            <span className="text-gray-700">{task.title}</span>
-                                        </div>
-                                        <span className="text-sm text-gray-400">Due: {task.due}</span>
+                    </div>
+                </div>
+
+                {/* Student Performance Chart */}
+                <div className="dashboard-card">
+                    <div className="card-header">
+                        <h2 className="card-title">Student Performance</h2>
+                        <TrendingUp size={20} className="text-gray-400" />
+                    </div>
+                    <div className="card-body">
+                        <div className="chart-placeholder">
+                            <p>Line chart showing student performance trends</p>
+                            <div className="chart-data-preview">
+                                {performanceData.map((item, idx) => (
+                                    <div key={idx} className="chart-bar" style={{ height: `${item.score}%` }}>
+                                        <span>{item.score}%</span>
                                     </div>
                                 ))}
                             </div>
@@ -134,39 +136,81 @@ const TeacherDashboardOverview = () => {
                     </div>
                 </div>
 
-                {/* Right Column: Announcements & Events */}
-                <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="p-5 border-b border-gray-100">
-                            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                                <Megaphone size={20} className="text-purple-500" />
-                                Announcements
-                            </h2>
-                        </div>
-                        <div className="p-5">
-                            <div className="space-y-4">
-                                {announcements.map((ann) => (
-                                    <div key={ann.id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                                        <h3 className="font-medium text-gray-800 mb-1">{ann.title}</h3>
-                                        <p className="text-sm text-gray-500 mb-2 line-clamp-2">{ann.content}</p>
-                                        <span className="text-xs text-gray-400">{ann.date}</span>
-                                    </div>
-                                ))}
+                {/* Attendance Donut Chart */}
+                <div className="dashboard-card">
+                    <div className="card-header">
+                        <h2 className="card-title">Attendance Overview</h2>
+                        <ClipboardCheck size={20} className="text-gray-400" />
+                    </div>
+                    <div className="card-body">
+                        <div className="attendance-chart-container">
+                            <div className="attendance-donut">
+                                <div className="donut-segment present" style={{ '--percentage': (attendanceData.present / attendanceData.total) * 100 }}>
+                                    <span className="donut-label">Present</span>
+                                </div>
+                                <div className="donut-center">
+                                    <span className="donut-percentage">{Math.round((attendanceData.present / attendanceData.total) * 100)}%</span>
+                                    <span className="donut-total">{attendanceData.total} Total</span>
+                                </div>
+                            </div>
+                            <div className="attendance-stats">
+                                <div className="stat-item">
+                                    <span className="stat-label">Present</span>
+                                    <span className="stat-value">{attendanceData.present}</span>
+                                </div>
+                                <div className="stat-item">
+                                    <span className="stat-label">Absent</span>
+                                    <span className="stat-value">{attendanceData.absent}</span>
+                                </div>
+                                <div className="stat-item">
+                                    <span className="stat-label">Late</span>
+                                    <span className="stat-value">{attendanceData.late}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg text-white p-6">
-                        <div className="flex items-start justify-between mb-4">
-                            <div>
-                                <h3 className="font-semibold text-lg">Upcoming Event</h3>
-                                <p className="text-blue-100 text-sm">Science Fair 2025</p>
-                            </div>
-                            <Calendar className="text-blue-200" />
+                {/* Pending Tasks */}
+                <div className="dashboard-card">
+                    <div className="card-header">
+                        <h2 className="card-title">Pending Tasks</h2>
+                        <AlertCircle size={20} className="text-orange-500" />
+                    </div>
+                    <div className="card-body">
+                        <div className="tasks-list">
+                            {pendingTasks.map((task) => (
+                                <div key={task.id} className="task-item">
+                                    <div className="task-indicator" style={{ backgroundColor: task.type === 'grading' ? '#ef4444' : task.type === 'upload' ? '#3b82f6' : '#10b981' }}></div>
+                                    <div className="task-content">
+                                        <h4>{task.title}</h4>
+                                        <span className="task-due">Due: {task.due}</span>
+                                    </div>
+                                    <div className="task-priority">
+                                        {task.priority === 'high' && <span className="badge badge-danger">High</span>}
+                                        {task.priority === 'medium' && <span className="badge badge-warning">Medium</span>}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-blue-100 bg-white/10 p-3 rounded-lg backdrop-blur-sm">
-                            <Clock size={16} />
-                            <span>Dec 15 • 09:00 AM</span>
+                    </div>
+                </div>
+
+                {/* Latest Announcements */}
+                <div className="dashboard-card">
+                    <div className="card-header">
+                        <h2 className="card-title">Latest Announcements</h2>
+                        <Megaphone size={20} className="text-gray-400" />
+                    </div>
+                    <div className="card-body">
+                        <div className="announcements-list">
+                            {announcements.map((ann) => (
+                                <div key={ann.id} className="announcement-item">
+                                    <h4>{ann.title}</h4>
+                                    <p>{ann.content}</p>
+                                    <span className="announcement-date">{ann.date}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
