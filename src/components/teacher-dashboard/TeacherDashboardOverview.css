@@ -327,10 +327,6 @@
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background: conic-gradient(
-        #10b981 0deg calc(var(--percentage) * 3.6deg),
-        #fee2e2 calc(var(--percentage) * 3.6deg) 360deg
-    );
     display: flex;
     align-items: center;
     justify-content: center;
