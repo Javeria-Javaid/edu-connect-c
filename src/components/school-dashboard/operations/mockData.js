@@ -71,6 +71,7 @@ export const applications = {
 };
 
 // Attendance Data
+// Attendance Data - Build Verification Fix
 export const attendanceStats = {
     todayAttendance: 94,
     totalPresent: 1150,
