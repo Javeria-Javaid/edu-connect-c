@@ -69,3 +69,29 @@ export const applications = {
         { id: 301 }, { id: 302 }, { id: 303 }
     ]
 };
+
+// Attendance Data
+export const attendanceStats = {
+    todayAttendance: 94,
+    totalPresent: 1150,
+    totalAbsent: 65,
+    totalLeave: 35,
+    missingSubmissions: 3,
+    irregularStudents: 12
+};
+
+export const classAttendance = [
+    { class: '10-A', present: 38, absent: 2, leave: 0, attendance: 95 },
+    { class: '10-B', present: 36, absent: 3, leave: 1, attendance: 90 },
+    { class: '9-A', present: 39, absent: 1, leave: 0, attendance: 97.5 },
+    { class: '9-B', present: 35, absent: 4, leave: 1, attendance: 87.5 },
+    { class: '8-A', present: 37, absent: 3, leave: 0, attendance: 92.5 }
+];
+
+export const missingSubmissions = [
+    { teacher: 'Mrs. Anderson', class: '8-B', section: 'B' },
+    { teacher: 'Mr. Wilson', class: '7-A', section: 'A' },
+    { teacher: 'Ms. Thompson', class: '9-C', section: 'C' }
+];
+
+export const irregularStudents = 12; // As per usage in SchoolAttendanceView.jsx line 112: {irregular} students...
