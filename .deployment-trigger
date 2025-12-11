@@ -1,0 +1,6 @@
+# Deployment Trigger
+
+This file exists to trigger fresh CI/CD builds when needed.
+
+Last deployment trigger: 2025-12-11 11:37 PKT
+Reason: Force fresh build to resolve CI cache issues
