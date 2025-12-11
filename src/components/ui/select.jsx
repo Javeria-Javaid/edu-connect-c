@@ -8,7 +8,7 @@ import {
   ChevronUpIcon,
 } from "lucide-react";
 
-import { cn } from "../../lib/utils";
+import { cn } from "./utils.js";
 
 function Select(props) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
