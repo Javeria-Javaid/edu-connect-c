@@ -76,7 +76,6 @@ import FeatureSection from './components/FeatureSection/FeatureSection';
 import RoleSection from './components/RoleSection/RoleSection';
 import ContactSection from './components/ContactSection/ContactSection';
 import Footer from './components/Footer/Footer';
-import educonnectLogo from './assets/educonnectLogo/educonnect_logo.png';
 import './index.css';
 
 // Import AuthPage
@@ -84,78 +83,9 @@ import AuthPage from './AuthPage';
 
 // --- COMPONENT 1: The Landing Page (Your original content) ---
 const LandingPage = () => {
-    // Navigation items for CardNav
-    const navItems = [
-        {
-            label: 'Services',
-            bgColor: '#f0f9ff',
-            textColor: '#1e293b',
-            links: [
-                { label: 'School Admissions', href: '#about' },
-                { label: 'Job Portal', href: '#features' },
-                { label: 'Vendor Services', href: '#roles' },
-            ]
-        },
-        {
-            label: 'Community',
-            bgColor: '#fef7cd',
-            textColor: '#1e293b',
-            links: [
-                { label: 'For Parents', href: '#roles' },
-                { label: 'For Teachers', href: '#roles' },
-                { label: 'For Schools', href: '#roles' },
-            ]
-        },
-        {
-            label: 'Support',
-            bgColor: '#dcfce7',
-            textColor: '#1e293b',
-            links: [
-                { label: 'Help Center', href: '#contact' },
-                { label: 'Contact Us', href: '#contact' },
-            ]
-        }
-    ];
-
     return (
         <div className="LandingPage">
-            <CardNav
-                logo={educonnectLogo}
-                logoAlt="EduConnect Logo"
-                items={navItems}
-                baseColor="#1e293b"
-                menuColor="#ffffff"
-                buttonBgColor="#66a1be"
-                buttonTextColor="#ffffff"
-                platformName="EduConnect"
-            />
-
-            <Hero
-                title="Connect. Learn. Grow Together"
-                subtitle="A unified platform connecting schools, teachers, parents, and vendors for a smarter educational ecosystem"
-                background="gradient"
-                backgroundProps={{
-                    gradient: "linear-gradient(135deg, #1e293b 0%, #1e293b 100%)"
-                }}
-                primaryButton={{
-                    text: "Get Started Free",
-                    onClick: () => window.location.href = '/login'
-                }}
-                secondaryButton={{
-                    text: "Explore Features",
-                    onClick: () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-            />
-
-            <AboutSection />
-
-            <FeatureSection />
-
-            <RoleSection />
-
-            <ContactSection />
-
-            <Footer />
+            <h1>Minimal Landing Page No Hooks</h1>
         </div>
     );
 };

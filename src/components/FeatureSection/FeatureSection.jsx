@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Award, Layers, Globe, Zap, Users, Shield } from 'lucide-react';
 // 💡 RENAMED CSS IMPORT
 import './FeatureSection.css';
@@ -66,13 +67,21 @@ const FeatureSection = () => {
                 {/* Right Column: Feature Cards */}
                 <div className="features-grid">
                     {featuresData.map((feature, index) => (
-                        <div key={index} className="feature-card" style={{ backgroundColor: feature.color }}>
+                        <motion.div
+                            key={index}
+                            className="feature-card"
+                            style={{ backgroundColor: feature.color }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                        >
                             <div className="icon-wrapper">
                                 <feature.icon size={36} className="feature-icon" />
                             </div>
                             <h3 className="card-title">{feature.title}</h3>
                             <p className="card-description">{feature.description}</p>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
 
