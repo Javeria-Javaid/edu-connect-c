@@ -172,7 +172,6 @@ const TeacherReports = () => {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                    {/* Build Fix: Ensure &gt; is used instead of > */}
                     <div style={{ marginTop: '16px', fontSize: '0.85rem', color: '#64748b', textAlign: 'center' }}>
                         Teachers with &gt; 22 hrs are highlighted in red
                     </div>
