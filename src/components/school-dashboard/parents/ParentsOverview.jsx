@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users, UserPlus, Link, Activity, MessageSquare, Bell, AlertTriangle, Info } from 'lucide-react';
-import { parentsStats } from './parentsMockData';
+import { parentsStats } from './mockData';
 import './ParentsOverview.css';
 
 const ParentsOverview = () => {
