@@ -2,27 +2,28 @@ import React from 'react';
 import DecryptedText from '../DecryptedText/DecryptedText';
 import './Hero.css';
 import educonnectLogo from '../../assets/educonnectLogo/educonnect_logo.png';
-import { motion } from 'framer-motion';
+
+// Lucide-react icons
 import { School, Briefcase, Globe, Link2, Users } from 'lucide-react';
 
 const Hero = ({
-    title,
-    subtitle,
-    background = "gradient",
-    backgroundProps = {
-        gradient: "linear-gradient(135deg, #1e293b 0%, #1e293b 100%)",
-        color: "#1e293b"
-    },
-    primaryButton = {
-        text: "Start Learning Free",
-        onClick: () => console.log("Primary button clicked")
-    },
-    secondaryButton = {
-        text: "Explore Courses",
-        onClick: () => console.log("Secondary Courses clicked")
-    },
-    className = ""
-}) => {
+                  title,
+                  subtitle,
+                  background = "gradient",
+                  backgroundProps = {
+                      gradient: "linear-gradient(135deg, #1e293b 0%, #1e293b 100%)",
+                      color: "#1e293b"
+                  },
+                  primaryButton = {
+                      text: "Start Learning Free",
+                      onClick: () => console.log("Primary button clicked")
+                  },
+                  secondaryButton = {
+                      text: "Explore Courses",
+                      onClick: () => console.log("Secondary Courses clicked")
+                  },
+                  className = ""
+              }) => {
 
     const getBackgroundStyle = () => {
         switch (background) {
@@ -56,12 +57,7 @@ const Hero = ({
             style={getBackgroundStyle()}
         >
             <div className="hero-container">
-                <motion.div
-                    className="hero-content-grid"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                >
+                <div className="hero-content-grid">
 
                     {/* Left Column */}
                     <div className="hero-text-content">
@@ -122,7 +118,7 @@ const Hero = ({
                         </div>
                     </div>
 
-                </motion.div>
+                </div>
             </div>
         </section>
     );
