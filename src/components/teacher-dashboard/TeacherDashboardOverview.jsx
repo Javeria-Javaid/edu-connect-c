@@ -144,7 +144,10 @@ const TeacherDashboardOverview = () => {
                     </div>
                     <div className="card-body">
                         <div className="attendance-chart-container">
-                            <div className="attendance-donut" style={{ background: `conic-gradient(#10b981 0deg ${(attendanceData.present / attendanceData.total) * 360}deg, #fee2e2 ${(attendanceData.present / attendanceData.total) * 360}deg 360deg)` }}>
+                            <div className="attendance-donut">
+                                <div className="donut-segment present" style={{ '--percentage': (attendanceData.present / attendanceData.total) * 100 }}>
+                                    <span className="donut-label">Present</span>
+                                </div>
                                 <div className="donut-center">
                                     <span className="donut-percentage">{Math.round((attendanceData.present / attendanceData.total) * 100)}%</span>
                                     <span className="donut-total">{attendanceData.total} Total</span>
