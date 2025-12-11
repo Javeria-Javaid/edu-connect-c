@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileText, Users, CheckCircle, XCircle, Clock, TrendingUp, BarChart } from 'lucide-react';
-import { admissionsStats, admissionCycles, applications } from './operations/operationsMockData';
+import { admissionsStats, admissionCycles, applications } from './operations/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolAdmissionsView = () => {

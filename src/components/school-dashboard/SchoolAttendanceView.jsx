@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users, CheckCircle, XCircle, Clock, AlertTriangle, TrendingUp, Calendar } from 'lucide-react';
-import { attendanceStats, classAttendance, missingSubmissions, irregularStudents } from './operations/operationsMockData';
+import { attendanceStats, classAttendance, missingSubmissions, irregularStudents } from './operations/mockData';
 import './SchoolAttendanceView.css';
 
 const SchoolAttendanceView = () => {
