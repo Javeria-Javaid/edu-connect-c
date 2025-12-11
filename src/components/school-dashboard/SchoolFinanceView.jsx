@@ -1,6 +1,6 @@
 import React from 'react';
 import { DollarSign, CreditCard, PieChart, TrendingUp, FileText, AlertCircle } from 'lucide-react';
-import { financeStats, recentTransactions, expenseCategories } from './logistics/mockData';
+import { financeStats, recentTransactions, expenseCategories } from './reports/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolFinanceView = () => {

@@ -155,3 +155,106 @@ export const classesData = [
     { id: 4, name: 'Grade 9', section: 'B', teacher: 'Mr. Robert Wilson', students: 35, room: 'R-202', attendance: 91 },
     { id: 5, name: 'Grade 8', section: 'A', teacher: 'Dr. Lisa Anderson', students: 40, room: 'R-301', attendance: 88 }
 ];
+
+// Finance Data (for SchoolFinanceView)
+export const financeStats = {
+    totalRevenue: '₨2,450,000',
+    totalExpenses: '₨1,850,000',
+    pendingFees: '₨320,000',
+    netBalance: '₨600,000'
+};
+
+export const recentTransactions = [
+    { id: 1, date: '2025-03-15', description: 'Tuition Fees - Grade 10', amount: 125000, type: 'income' },
+    { id: 2, date: '2025-03-14', description: 'Teacher Salaries', amount: -450000, type: 'expense' },
+    { id: 3, date: '2025-03-13', description: 'Lab Equipment', amount: -85000, type: 'expense' },
+    { id: 4, date: '2025-03-12', description: 'Transport Fees', amount: 35000, type: 'income' },
+    { id: 5, date: '2025-03-11', description: 'Utility Bills', amount: -25000, type: 'expense' }
+];
+
+export const expenseCategories = [
+    { category: 'Salaries', amount: 450000, percentage: 60 },
+    { category: 'Utilities', amount: 100000, percentage: 13 },
+    { category: 'Maintenance', amount: 80000, percentage: 11 },
+    { category: 'Supplies', amount: 120000, percentage: 16 }
+];
+
+// Transport Data (for SchoolTransportView)
+export const transportStats = {
+    totalVehicles: 12,
+    activeRoutes: 8,
+    studentsTransported: 450,
+    maintenanceDue: 2
+};
+
+export const vehicles = [
+    { id: 1, number: 'VAN-001', capacity: 50, status: 'Active', driver: 'Ahmed Ali', route: 'Route A' },
+    { id: 2, number: 'VAN-002', capacity: 50, status: 'Active', driver: 'Hassan Khan', route: 'Route B' },
+    { id: 3, number: 'VAN-003', capacity: 45, status: 'Maintenance', driver: 'Imran Shah', route: 'Route C' },
+    { id: 4, number: 'BUS-001', capacity: 60, status: 'Active', driver: 'Usman Malik', route: 'Route D' }
+];
+
+export const routes = [
+    { id: 1, name: 'Route A', stops: 8, students: 45, duration: '45 min', status: 'Running' },
+    { id: 2, name: 'Route B', stops: 10, students: 48, duration: '55 min', status: 'Running' },
+    { id: 3, name: 'Route C', stops: 6, students: 42, duration: '35 min', status: 'Delayed' },
+    { id: 4, name: 'Route D', stops: 12, students: 55, duration: '65 min', status: 'Running' }
+];
+
+export const transportAlerts = [
+    { type: 'Maintenance Due', vehicle: 'VAN-003', priority: 'high' },
+    { type: 'Route Delay', route: 'Route C', priority: 'medium' }
+];
+
+// Attendance Data (for SchoolAttendanceView)
+export const attendanceStats = {
+    todayAttendance: 93.6,
+    totalPresent: 1165,
+    totalAbsent: 80,
+    totalLeave: 35,
+    missingSubmissions: 2,
+    irregularStudents: 3,
+    attendanceRate: 93.6,
+    weeklyAverage: 94.2
+};
+
+export const classAttendance = [
+    { class: '10-A', section: 'A', present: 40, absent: 2, leave: 0, total: 42, attendance: 95, percentage: 95.2 },
+    { class: '10-B', section: 'B', present: 37, absent: 3, leave: 0, total: 40, attendance: 92, percentage: 92.5 },
+    { class: '9-A', section: 'A', present: 36, absent: 2, leave: 0, total: 38, attendance: 95, percentage: 94.7 },
+    { class: '9-B', section: 'B', present: 33, absent: 2, leave: 0, total: 35, attendance: 94, percentage: 94.3 },
+    { class: '8-A', section: 'A', present: 38, absent: 2, leave: 0, total: 40, attendance: 95, percentage: 95.0 }
+];
+
+export const missingSubmissions = [
+    { teacher: 'Ms. Sarah Johnson', class: '10', section: 'A', date: '2025-03-15' },
+    { teacher: 'Mr. David Lee', class: '9', section: 'C', date: '2025-03-15' }
+];
+
+export const irregularStudents = [
+    { name: 'Ali Hassan', class: '10-B', daysAbsent: 8, percentage: 60 },
+    { name: 'Fatima Ahmed', class: '9-A', daysAbsent: 6, percentage: 70 },
+    { name: 'Zainab Khan', class: '8-C', daysAbsent: 7, percentage: 65 }
+];
+
+// Admissions Data (for SchoolAdmissionsView)
+export const admissionsStats = {
+    totalApplications: 245,
+    pendingReview: 68,
+    accepted: 152,
+    rejected: 25,
+    availableSeats: 150
+};
+
+export const admissionCycles = [
+    { id: 1, name: '2025-2026 Academic Year', startDate: '2025-01-01', endDate: '2025-03-31', status: 'Active' },
+    { id: 2, name: 'Mid-Year Admissions', startDate: '2025-06-01', endDate: '2025-07-15', status: 'Upcoming' }
+];
+
+export const applications = [
+    { id: 1, studentName: 'Ahmed Ali', grade: '10', appliedDate: '2025-02-15', status: 'Pending', testScore: 85 },
+    { id: 2, studentName: 'Sara Khan', grade: '9', appliedDate: '2025-02-20', status: 'Accepted', testScore: 92 },
+    { id: 3, studentName: 'Hassan Raza', grade: '8', appliedDate: '2025-02-18', status: 'Under Review', testScore: 78 },
+    { id: 4, studentName: 'Ayesha Malik', grade: '10', appliedDate: '2025-02-25', status: 'Accepted', testScore: 88 },
+    { id: 5, studentName: 'Usman Shah', grade: '9', appliedDate: '2025-03-01', status: 'Pending', testScore: 82 }
+];

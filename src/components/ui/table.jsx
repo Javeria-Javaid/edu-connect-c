@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { cn } from "./utils.js";
+import { cn } from "@/lib/utils";
 
 function Table({ className, ...props }) {
   return (
