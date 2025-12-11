@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, Clock, FileText, Award, TrendingUp, AlertCircle } from 'lucide-react';
-import { examsData, examTimetable } from './academics/mockData';
+import { examsData, examTimetable } from './reports/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolExamsView = () => {
