@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, useEffect } from 'react';
-import { gsap } from 'gsap';
+import gsap from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
 import './CardNav.css';
@@ -85,46 +85,48 @@ const CardNav = ({
         return tl;
     };
 
-    useLayoutEffect(() => {
-        const tl = createTimeline();
-        tlRef.current = tl;
-
-        return () => {
-            tl?.kill();
-            tlRef.current = null;
-        };
-    }, [ease, items]);
+    /*
+        useLayoutEffect(() => {
+            const tl = createTimeline();
+            tlRef.current = tl;
+    
+            return () => {
+                tl?.kill();
+                tlRef.current = null;
+            };
+        }, [ease, items]); */
 
     // Handles resizing while the menu is open to recalculate the height
-    useLayoutEffect(() => {
-        const handleResize = () => {
-            if (!tlRef.current) return;
-
-            if (isExpanded) {
-                const newHeight = calculateHeight();
-                // Directly set the height if expanded to handle fluid resizing
-                gsap.set(navRef.current, { height: newHeight });
-
-                // Recreate the timeline to update its height logic
-                tlRef.current.kill();
-                const newTl = createTimeline();
-                if (newTl) {
-                    newTl.progress(1); // Jump to the end state
-                    tlRef.current = newTl;
+    /*
+        useLayoutEffect(() => {
+            const handleResize = () => {
+                if (!tlRef.current) return;
+    
+                if (isExpanded) {
+                    const newHeight = calculateHeight();
+                    // Directly set the height if expanded to handle fluid resizing
+                    gsap.set(navRef.current, { height: newHeight });
+    
+                    // Recreate the timeline to update its height logic
+                    tlRef.current.kill();
+                    const newTl = createTimeline();
+                    if (newTl) {
+                        newTl.progress(1); // Jump to the end state
+                        tlRef.current = newTl;
+                    }
+                } else {
+                    // If collapsed, just ensure the timeline is recreated for the next open
+                    tlRef.current.kill();
+                    const newTl = createTimeline();
+                    if (newTl) {
+                        tlRef.current = newTl;
+                    }
                 }
-            } else {
-                // If collapsed, just ensure the timeline is recreated for the next open
-                tlRef.current.kill();
-                const newTl = createTimeline();
-                if (newTl) {
-                    tlRef.current = newTl;
-                }
-            }
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [isExpanded]);
+            };
+    
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, [isExpanded]); */
 
     // Click Outside Handler
     useEffect(() => {
