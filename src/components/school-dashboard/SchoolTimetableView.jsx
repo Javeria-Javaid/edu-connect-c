@@ -1,6 +1,6 @@
 import React from 'react';
 import { Clock, Calendar, AlertTriangle, Check, Users, BookOpen } from 'lucide-react';
-import { timetableStats, sampleTimetable } from './academics/academicsMockData';
+import { timetableStats, sampleTimetable } from './academics/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolTimetableView = () => {

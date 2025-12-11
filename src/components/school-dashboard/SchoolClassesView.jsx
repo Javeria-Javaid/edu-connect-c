@@ -1,6 +1,6 @@
 import React from 'react';
 import { Book, Users, AlertCircle, TrendingUp, BookOpen, UserCheck } from 'lucide-react';
-import { classesData, classesStats } from './academics/academicsMockData';
+import { classesData, classesStats } from './academics/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolClassesView = () => {
