@@ -5,12 +5,62 @@ import { FaGoogle, FaGithub, FaSignInAlt, FaUserPlus, FaEye, FaEyeSlash, FaArrow
 import { useAuth } from './context/AuthContext.jsx';
 
 // --- MOCK CREDENTIALS FOR DEVELOPMENT ---
+// COMPREHENSIVE TEST CREDENTIALS WITH ROLE-BASED DATA
+const TEST_CREDENTIALS = [
+    {
+        email: "superadmin@educonnect.com",
+        password: "Admin@123",
+        role: "admin",
+        name: "System Administrator",
+        dashboard: "/dashboard"
+    },
+    {
+        email: "school@educonnect.edu",
+        password: "School@456",
+        role: "school_admin",
+        name: "School Administrator",
+        schoolId: "SCH001",
+        schoolName: "Greenwood High School",
+        dashboard: "/school/dashboard"
+    },
+    {
+        email: "teacher@educonnect.edu",
+        password: "Teacher@789",
+        role: "teacher",
+        name: "Demo Teacher",
+        teacherId: "TCH001",
+        subjects: ["Mathematics", "Physics"],
+        dashboard: "/teacher/dashboard"
+    },
+    {
+        email: "parent@educonnect.com",
+        password: "Parent@101",
+        role: "parent",
+        name: "Parent User",
+        parentId: "PAR001",
+        studentIds: ["STU001", "STU002"],
+        students: ["Ahmed Ali", "Sara Ali"],
+        dashboard: "/parent/dashboard"
+    },
+    {
+        email: "vendor@educonnect.com",
+        password: "Vendor@112",
+        role: "vendor",
+        name: "Vendor Supplier",
+        vendorId: "VEN001",
+        companyName: "Quick Supply Co.",
+        services: ["Transport", "Catering", "Stationery"],
+        dashboard: "/vendor/dashboard"
+    }
+];
+
+// Legacy format for backward compatibility
 const CREDENTIALS = {
-    'admin@educonnect.com': { password: 'password123', role: 'admin' },
-    'school@educonnect.com': { password: 'password123', role: 'school_admin' },
-    'teacher@educonnect.com': { password: '123456', role: 'teacher' },
-    'parent@educonnect.com': { password: '123456', role: 'parent' },
-    'vendor@educonnect.com': { password: '123456', role: 'vendor' }
+    'superadmin@educonnect.com': { password: 'Admin@123', role: 'admin' },
+    'school@educonnect.edu': { password: 'School@456', role: 'school_admin' },
+    'teacher@educonnect.edu': { password: 'Teacher@789', role: 'teacher' },
+    'parent@educonnect.com': { password: 'Parent@101', role: 'parent' },
+    'vendor@educonnect.com': { password: 'Vendor@112', role: 'vendor' }
 };
 // ----------------------------------------
 
@@ -44,43 +94,39 @@ const AuthPage = ({ defaultView = 'login' }) => {
         const trimmedEmail = email.trim();
         const trimmedPassword = password.trim();
 
-        // Check if credentials exist
-        const userCreds = CREDENTIALS[trimmedEmail];
-        
-        if (userCreds && trimmedPassword === userCreds.password) {
-            // Use role from credentials (not from dropdown) for security
-            const userRole = userCreds.role;
-            console.log("Login Successful! Redirecting to Dashboard...", { email: trimmedEmail, role: userRole });
-            login({ email: trimmedEmail, role: userRole });
-            
+        // Find user in TEST_CREDENTIALS array
+        const authenticatedUser = TEST_CREDENTIALS.find(
+            user => user.email === trimmedEmail && user.password === trimmedPassword
+        );
+
+        if (authenticatedUser) {
+            const userRole = authenticatedUser.role;
+            console.log("✅ Login Successful!", {
+                email: trimmedEmail,
+                role: userRole,
+                name: authenticatedUser.name,
+                dashboard: authenticatedUser.dashboard
+            });
+
+            // Pass full user data to auth context
+            login({
+                email: trimmedEmail,
+                role: userRole,
+                name: authenticatedUser.name,
+                ...authenticatedUser
+            });
+
             // Redirect based on role
             const from = location.state?.from?.pathname;
             if (from) {
                 navigate(from, { replace: true });
             } else {
-                // Redirect to role-specific dashboard
-                switch (userRole) {
-                    case 'admin':
-                        navigate('/dashboard', { replace: true });
-                        break;
-                    case 'school_admin':
-                        navigate('/school/dashboard', { replace: true });
-                        break;
-                    case 'teacher':
-                        navigate('/teacher/dashboard', { replace: true });
-                        break;
-                    case 'parent':
-                        navigate('/parent/dashboard', { replace: true });
-                        break;
-                    case 'vendor':
-                        navigate('/vendor/dashboard', { replace: true });
-                        break;
-                    default:
-                        navigate('/dashboard', { replace: true });
-                }
+                // Use the dashboard path from user credentials
+                navigate(authenticatedUser.dashboard, { replace: true });
             }
         } else {
-            setLoginError('Invalid email or password.');
+            setLoginError('Invalid email or password. Please check your credentials.');
+            console.log("❌ Login Failed", { email: trimmedEmail });
         }
     };
 
