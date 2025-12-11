@@ -3,7 +3,6 @@ import { Book, Users, AlertCircle, TrendingUp, BookOpen, UserCheck } from 'lucid
 import { classesData, classesStats } from './academics/academicsMockData';
 import './parents/ParentsOverview.css';
 
-// Build Fix: Ensure file is picked up by CI
 const SchoolClassesView = () => {
     const { totalClasses, totalSections, avgStudents, teacherAssignment, recentlyAdded, issues } = classesStats;
 
