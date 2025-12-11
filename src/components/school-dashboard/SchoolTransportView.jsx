@@ -1,6 +1,6 @@
 import React from 'react';
 import { Truck, MapPin, Users, AlertTriangle, Clock, Settings, Navigation } from 'lucide-react';
-import { transportStats, vehicles, routes, transportAlerts } from './logistics/logisticsMockData';
+import { transportStats, vehicles, routes, transportAlerts } from './logistics/mockData';
 import './parents/ParentsOverview.css';
 
 const SchoolTransportView = () => {
