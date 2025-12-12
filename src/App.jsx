@@ -185,20 +185,34 @@ const LandingPage = () => {
     );
 };
 
-const UnauthorizedPage = () => (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-4">
-        <h1 className="text-3xl font-semibold text-[#2563EB]">Access Restricted</h1>
-        <p className="text-gray-600 max-w-md">
-            You do not have the required permissions to view this area. Please contact an administrator if you believe this is a mistake.
-        </p>
-        <a
-            href="/login"
-            className="btn primary"
-        >
-            Return to Login
-        </a>
-    </div>
-);
+const UnauthorizedPage = () => {
+    const { user, role } = useAuth();
+    const navigate = useNavigate();
+
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-4">
+            <h1 className="text-3xl font-semibold text-[#2563EB]">Access Restricted</h1>
+            <p className="text-gray-600 max-w-md">
+                You do not have the required permissions to view this area.
+            </p>
+
+            {/* DEBUG INFO */}
+            <div className="bg-gray-100 p-4 rounded-lg text-left max-w-md w-full">
+                <p className="font-bold mb-2">🔍 Debug Information:</p>
+                <p><strong>Your Role:</strong> {role || 'Not set'}</p>
+                <p><strong>Email:</strong> {user?.email || 'Not logged in'}</p>
+                <p><strong>User Data:</strong> {JSON.stringify(user, null, 2)}</p>
+            </div>
+
+            <button
+                onClick={() => navigate('/login')}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+                Return to Login
+            </button>
+        </div>
+    );
+};
 
 // --- COMPONENT 2: The Main App (Handles Routing) ---
 function App() {
