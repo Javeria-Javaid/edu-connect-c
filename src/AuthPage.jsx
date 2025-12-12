@@ -142,6 +142,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
         <div className="form-container login-form-container">
             <form className="login-form" onSubmit={handleLoginSubmit}>
                 <h2>Welcome Back!</h2>
+                <p className="form-subtitle"></p>
 
                 <div className="social-login-container">
                     <button type="button" className="social-login-btn google">
@@ -226,6 +227,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
         <div className="form-container signup-form-container">
             <form className="signup-form" onSubmit={handleSignupSubmit}>
                 <h2>Create Account</h2>
+                <p className="form-subtitle"></p>
 
                 <div className="social-login-container">
                     <button type="button" className="social-login-btn google">
