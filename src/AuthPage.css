@@ -96,8 +96,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 30px 40px;
-    /* Optimized padding for better fit */
+    padding: 40px 50px;
+    /* Restored padding for proper field width */
     height: 100%;
     text-align: center;
 }
