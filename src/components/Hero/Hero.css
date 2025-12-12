@@ -243,19 +243,32 @@
 }
 
 @media (max-width: 768px) {
+    .hero-content-grid {
+        gap: 80px;
+        /* Increased gap to prevent overlap */
+    }
+
+    .hero-visual-content {
+        margin-top: 50px;
+        /* Push visual content down further */
+    }
+
     .logo-feature-wrapper {
-        width: 260px;
-        height: 260px;
+        width: 220px;
+        /* Smaller wrapper */
+        height: 220px;
     }
 
     .feature-circle {
-        width: 60px;
-        height: 60px;
-        transform-origin: -120px center;
+        width: 55px;
+        /* Smaller icons */
+        height: 55px;
+        transform-origin: -110px center;
+        /* Tighter orbit radius */
     }
 
     .feature-icon-rotate {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
 }
 

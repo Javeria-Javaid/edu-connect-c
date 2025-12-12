@@ -295,6 +295,13 @@
         overflow-y: auto;
     }
 
+    .card-nav.open .card-nav-content {
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto;
+        display: flex;
+    }
+
     .logo-container {
         position: static;
         transform: none;
