@@ -191,5 +191,15 @@
 
     .feature-card {
         padding: 25px;
+        flex-direction: column;
+        /* Stack icon, title, desc vertically */
+        text-align: center;
+        /* Center align content */
+        align-items: center;
+    }
+
+    .card-title {
+        margin-top: 10px;
+        /* spacing between icon and title */
     }
 }
