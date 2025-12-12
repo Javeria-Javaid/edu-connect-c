@@ -300,6 +300,16 @@
         opacity: 1 !important;
         pointer-events: auto;
         display: flex;
+        flex-direction: column;
+        /* Ensure column layout */
+        height: auto;
+    }
+
+    /* FORCE ITEMS VISIBLE overriding GSAP if needed */
+    .card-nav.open .nav-card {
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
     }
 
     .logo-container {
