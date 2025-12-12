@@ -256,6 +256,7 @@ h2 {
 .login-link-text,
 .signup-link-text {
     margin-top: 25px;
+    margin-bottom: 20px;
     font-size: 14px;
     color: #64748b;
 }
@@ -267,6 +268,11 @@ h2 {
     font-weight: 600;
     text-decoration: none;
     margin-left: 5px;
+}
+
+.login-link-text a:hover,
+.signup-link-text a:hover {
+    text-decoration: underline;
 }
 
 /* =======================================
