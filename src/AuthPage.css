@@ -96,8 +96,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 30px;
-    /* Reduced padding */
+    padding: 40px 50px;
+    /* Increased padding for better spacing */
     height: 100%;
     text-align: center;
 }
@@ -114,9 +114,9 @@ h2 {
 .form-subtitle {
     font-size: 14px;
     color: #64748b;
-    margin-bottom: 20px;
-    /* Reduced margin */
-    line-height: 1.4;
+    margin-bottom: 28px;
+    /* Increased margin for better spacing */
+    line-height: 1.5;
 }
 
 /* Inputs */
@@ -130,10 +130,10 @@ h2 {
 .login-form input,
 .role-select {
     width: 100%;
-    padding: 12px 14px;
-    /* Slightly smaller padding */
-    margin-bottom: 12px;
-    /* Reduced margin */
+    padding: 14px 16px;
+    /* Increased padding for better touch targets */
+    margin-bottom: 16px;
+    /* Increased margin for better spacing */
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     background-color: #f8fafc;
@@ -358,21 +358,25 @@ h2 {
 }
 
 .auth-left-cta {
-    background: transparent;
+    background: white;
     border: 2px solid white;
-    color: white;
-    padding: 12px 30px;
+    color: #66a1be;
+    padding: 14px 40px;
     border-radius: 30px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .auth-left-cta:hover {
-    background: white;
-    color: #66a1be;
-    /* Theme secondary color */
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3);
 }
 
 /* Steps for Signup Panel */
