@@ -333,12 +333,17 @@
     }
 
     .card-nav-content {
-        top: 65px;
+        position: relative;
+        /* FIX: Change from absolute to relative so it pushes height */
+        top: 0;
+        /* Reset top since it's relative now */
         flex-direction: column;
         align-items: stretch;
         gap: 6px;
         padding: 0.75rem;
         padding-bottom: 30px;
+        visibility: visible !important;
+        /* Double ensure visibility */
     }
 
     .nav-card {
