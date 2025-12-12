@@ -239,22 +239,90 @@ export const irregularStudents = [
 
 // Admissions Data (for SchoolAdmissionsView)
 export const admissionsStats = {
-    totalApplications: 245,
-    pendingReview: 68,
-    accepted: 152,
-    rejected: 25,
-    availableSeats: 150
+    activeCycles: 2,
+    applicationsToday: 12,
+    inReview: 45,
+    approved: 152,
+    rejected: 18,
+    waitlisted: 23,
+    conversionRate: 75,
+    missingDocs: 8
 };
 
 export const admissionCycles = [
-    { id: 1, name: '2025-2026 Academic Year', startDate: '2025-01-01', endDate: '2025-03-31', status: 'Active' },
-    { id: 2, name: 'Mid-Year Admissions', startDate: '2025-06-01', endDate: '2025-07-15', status: 'Upcoming' }
+    {
+        id: 1,
+        name: '2025-2026 Academic Year',
+        startDate: '2025-01-01',
+        endDate: '2025-03-31',
+        status: 'Active',
+        seatsAvailable: 120,
+        applicationsReceived: 245,
+        classes: ['Grade 1', 'Grade 6', 'Grade 9']
+    },
+    {
+        id: 2,
+        name: 'Mid-Year Admissions 2025',
+        startDate: '2025-06-01',
+        endDate: '2025-07-15',
+        status: 'Upcoming',
+        seatsAvailable: 30,
+        applicationsReceived: 45,
+        classes: ['Grade 2', 'Grade 7']
+    }
 ];
 
-export const applications = [
-    { id: 1, studentName: 'Ahmed Ali', grade: '10', appliedDate: '2025-02-15', status: 'Pending', testScore: 85 },
-    { id: 2, studentName: 'Sara Khan', grade: '9', appliedDate: '2025-02-20', status: 'Accepted', testScore: 92 },
-    { id: 3, studentName: 'Hassan Raza', grade: '8', appliedDate: '2025-02-18', status: 'Under Review', testScore: 78 },
-    { id: 4, studentName: 'Ayesha Malik', grade: '10', appliedDate: '2025-02-25', status: 'Accepted', testScore: 88 },
-    { id: 5, studentName: 'Usman Shah', grade: '9', appliedDate: '2025-03-01', status: 'Pending', testScore: 82 }
-];
+export const applications = {
+    new: [
+        {
+            id: 1,
+            studentName: 'Ahmed Ali',
+            parentName: 'Muhammad Ali',
+            class: 'Grade 10',
+            date: '2025-03-01',
+            documents: 3,
+            required: 5
+        },
+        {
+            id: 2,
+            studentName: 'Fatima Noor',
+            parentName: 'Abdul Noor',
+            class: 'Grade 9',
+            date: '2025-03-02',
+            documents: 5,
+            required: 5
+        }
+    ],
+    underReview: [
+        {
+            id: 3,
+            studentName: 'Sara Khan',
+            parentName: 'Imran Khan',
+            class: 'Grade 8',
+            date: '2025-02-28',
+            documents: 5,
+            required: 5
+        },
+        {
+            id: 4,
+            studentName: 'Hassan Raza',
+            parentName: 'Ali Raza',
+            class: 'Grade 10',
+            date: '2025-02-27',
+            documents: 4,
+            required: 5
+        }
+    ],
+    approved: [
+        {
+            id: 5,
+            studentName: 'Ayesha Malik',
+            parentName: 'Tariq Malik',
+            class: 'Grade 9',
+            date: '2025-02-25',
+            documents: 5,
+            required: 5
+        }
+    ]
+};
+
