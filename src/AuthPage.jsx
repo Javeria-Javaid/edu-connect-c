@@ -227,7 +227,7 @@ const AuthPage = ({ defaultView = 'login' }) => {
         <div className="form-container signup-form-container">
             <form className="signup-form" onSubmit={handleSignupSubmit}>
                 <h2>Create Account</h2>
-                <p className="form-subtitle">Enter your personal data to create your account.</p>
+                <p className="form-subtitle"></p>
 
                 <div className="social-login-container">
                     <button type="button" className="social-login-btn google">
