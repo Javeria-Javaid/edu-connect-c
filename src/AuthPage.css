@@ -96,8 +96,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 40px 50px;
-    /* Increased padding for better spacing */
+    padding: 30px 40px;
+    /* Optimized padding for better fit */
     height: 100%;
     text-align: center;
 }
@@ -114,8 +114,8 @@ h2 {
 .form-subtitle {
     font-size: 14px;
     color: #64748b;
-    margin-bottom: 28px;
-    /* Increased margin for better spacing */
+    margin-bottom: 20px;
+    /* Optimized margin */
     line-height: 1.5;
 }
 
@@ -130,10 +130,10 @@ h2 {
 .login-form input,
 .role-select {
     width: 100%;
-    padding: 14px 16px;
-    /* Increased padding for better touch targets */
-    margin-bottom: 16px;
-    /* Increased margin for better spacing */
+    padding: 12px 14px;
+    /* Optimized padding */
+    margin-bottom: 14px;
+    /* Optimized margin */
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     background-color: #f8fafc;
@@ -188,7 +188,8 @@ h2 {
     display: flex;
     align-items: center;
     width: 100%;
-    margin: 20px 0;
+    margin: 16px 0;
+    /* Reduced margin */
     color: #94a3b8;
     font-size: 13px;
     font-weight: 500;
@@ -214,7 +215,8 @@ h2 {
 .signup-submit-btn,
 .login-submit-btn {
     width: 100%;
-    padding: 14px;
+    padding: 13px;
+    /* Reduced padding */
     border: none;
     border-radius: 10px;
     background: linear-gradient(135deg, #66a1be 0%, #5590ad 100%);
@@ -227,7 +229,8 @@ h2 {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 8px;
+    /* Reduced margin */
     box-shadow: 0 4px 12px rgba(102, 161, 190, 0.3);
     transition: all 0.3s;
 }
@@ -255,8 +258,10 @@ h2 {
 
 .login-link-text,
 .signup-link-text {
-    margin-top: 25px;
-    margin-bottom: 20px;
+    margin-top: 18px;
+    /* Reduced margin */
+    margin-bottom: 10px;
+    /* Reduced margin */
     font-size: 14px;
     color: #64748b;
 }
