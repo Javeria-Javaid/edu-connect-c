@@ -73,10 +73,9 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Bottom Bar: Copyright */}
             <div className="footer-bottom-bar">
                 <p className="copyright-text">
-                    <Copyright size={14} style={{ verticalAlign: 'middle', marginRight: '5px' }} />
+                    <Copyright size={14} />
                     {new Date().getFullYear()} EduConnect. All rights reserved.
                 </p>
             </div>

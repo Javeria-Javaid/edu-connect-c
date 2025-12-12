@@ -1,6 +1,7 @@
 /* --- FOOTER CONTAINER --- */
 .site-footer {
-    background-color: #1e293b; /* Dark background to contrast with main content */
+    background-color: #1e293b;
+    /* Dark background to contrast with main content */
     color: #ffffff;
     padding-top: 60px;
     padding-left: 20px;
@@ -29,7 +30,8 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #66a1be; /* Primary color for headings */
+    color: #66a1be;
+    /* Primary color for headings */
 }
 
 /* --- BRAND INFO (Column 1) --- */
@@ -128,6 +130,11 @@
 .copyright-text {
     font-size: 0.85rem;
     color: #999;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 
@@ -140,12 +147,14 @@
     }
 
     .brand-info {
-        grid-column: 1 / 3; /* Brand info spans two columns */
+        grid-column: 1 / 3;
+        /* Brand info spans two columns */
         align-items: center;
         text-align: center;
     }
 
-    .brand-slogan, .contact-info {
+    .brand-slogan,
+    .contact-info {
         max-width: 100%;
     }
 
