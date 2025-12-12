@@ -288,11 +288,13 @@
         height: 65px;
     }
 
-    /* CRUCIAL FIX: Force height auto to allow mobile scrolling when expanded */
+    /* CRUCIAL FIX: Allow menu to take full height needed */
     .card-nav.open {
         height: auto !important;
-        max-height: 90vh;
-        overflow-y: auto;
+        max-height: 900vh !important;
+        /* Effectively unlimited */
+        overflow-y: visible !important;
+        /* Let body scroll if needed, or use content scroll */
     }
 
     .card-nav.open .card-nav-content {
@@ -359,10 +361,14 @@
 
     .nav-card {
         height: auto;
-        min-height: 80px;
-        /* Slightly taller touch targets */
-        flex: 1 1 auto;
+        min-height: 90px;
+        /* Increased touch target height */
+        flex: 0 0 auto;
+        /* Do not shrink! */
+        width: 100%;
+        /* Full width */
         max-width: none;
+        padding: 18px 22px;
         min-width: auto;
         padding: 16px 20px;
         /* More internal padding */
