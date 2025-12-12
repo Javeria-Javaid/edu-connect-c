@@ -334,36 +334,48 @@
 
     .card-nav-content {
         position: relative;
-        /* FIX: Change from absolute to relative so it pushes height */
+        /* FIX: Change from absolute to relative */
         top: 0;
-        /* Reset top since it's relative now */
         flex-direction: column;
         align-items: stretch;
-        gap: 6px;
-        padding: 0.75rem;
-        padding-bottom: 30px;
+        gap: 12px;
+        /* Increased gap for better separation */
+        padding: 1rem;
+        /* More breathing room on sides */
+        padding-bottom: 60px;
+        /* Extra padding for bottom safe area/scroll */
         visibility: visible !important;
-        /* Double ensure visibility */
+    }
+
+    /* Hide Scrollbar for cleaner UI */
+    .card-nav.open::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card-nav.open {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     .nav-card {
         height: auto;
-        min-height: 70px;
+        min-height: 80px;
+        /* Slightly taller touch targets */
         flex: 1 1 auto;
         max-width: none;
         min-width: auto;
-        padding: 12px 16px;
-    }
-
-    .nav-card-label {
-        margin-bottom: 6px;
+        padding: 16px 20px;
+        /* More internal padding */
+        border-radius: 12px;
+        /* Softer corners */
     }
 
     .nav-card-links {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 8px;
+        gap: 10px;
+        /* Better link spacing */
+        margin-top: 12px;
     }
 
     .nav-card-link {
